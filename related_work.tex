@@ -1,0 +1,75 @@
+\section*{Related Work}
+
+% First short summary, 
+% then in detail per paper (Historical context/storyline)
+
+Data types: observational, interventional, fixed variables
+
+\textbf{Factors}
+\begin{itemize}
+    \item Confounding
+    \item Mechanism function
+    \item Cycles
+    \item Intervention: perfect, stochastic, mechanism change, activity intervention, other
+    \item Known intervention targets
+    \item Taks/Output: global causal discovery (MAG/MG?, strength of links?), ancestral relations, predict expression after intervention, ...
+    \item Fixed variables
+    \item Computation time
+\end{itemize}
+
+
+\textbf{Papers}
+\begin{itemize}
+    \item [\cite{yang2018characterizing}] 
+        Generalize \cite{hauser2012characterization} from perfect to general interventions. Define interventional Markov equivalence class, which is identified from general intervention experiments. First provably consistent algotithm for learning DAGs. Simulated and biological datasets, with observational and intervention data.
+    \item [\cite{mooij2013cyclic}]
+        Observational and interventional equilibrium data (cytometry \cite{sachs2005causal}). Deals with feedback loops and continuous data. Model activity (how the equilibrium distributions of direct effects is influenced) instead of abundance of compounds, so standard intervention formalism of \citet{pearl2009causality} is not applicable. Nonlinear mechanisms are approximated by coupled local linearizations. 
+    \item [\cite{hauser2012characterization}]
+        Every interventional Markov equivalence class can be represented by an interventional essential graph (like CPDAG in obs. case). Generalize GES to the Greedy Interventional Equivalence Search algorithm (GIES). Tested in simulation study.
+    \item [\cite{tian2001causal}]
+        Possibly infer some environmental change?
+    \item [\cite{forre2018constraint}]
+        Introduces modelling framework of modular SCMs (mSCM) and $\sigma$-connection graphs, extending $\sigma$-separation to work on them. ASD (Accounting for Strong Dependences; score-based) method tested on synthetic data and solved with an ASP (Answer Set Programming) solver. Very computationally expensive.
+    \item [\cite{versteeg2019boosting}]
+        Estimates of LCD and ICP following JCI framework. 
+\end{itemize}
+
+
+\textbf{Datasets}
+\begin{itemize}
+    \item [\cite{kemmeren2014large}]
+        Gene expression dataset.
+    \item [\cite{sachs2005causal}] 
+        Flow cytometry in human immune system cells; signalling network; compare to consensus network
+\end{itemize}
+
+\textbf{Methods}
+General description and details about different implementations in papers (OG and SotA and more).
+\begin{itemize}
+    \item Constraint-based: using the faithfulness assumption, restrict the class of possible causal graphs with independence tests.
+        \begin{itemize}
+            \item Inductive Causation (IC) was introduced by \citet{verma1991equivalence} and generally describes how we can induce a PDAG from conditional independences in the data. The algorithm consists of two steps: inducing the skeleton and orienting the edges. For every pair of variables $a$ and $b$, we check whether there is an edge in the PDAG. Using the faithfulness assumption, we add an edge if there is no separating set of variables $S_{ab}$ that makes $a$ and $b$ conditionally independent ($\nexists S : \indep{a}{b}{S_{ab}}{}$). One easy step of edge orientation uses the separation criterion of colliders. If two non-adjacent variables $a$ and $b$ share a neighbour $c$ that is not in $S_{ab}$, it must be a collider on the path and we induce edge orientation $a\to c \ot b$. Application of additional orientation rules lead us to a maximally oriented PDAG, which describes the Markov equivalence class of all causal graphs that induce the joint data distribution. One early set of such rules was described by \citet{spirtes2000causation} in the SGS algorithm, which was named after the authors.
+            
+            IC is quite limited, because it relies on several assumptions about the underlying SCM (e.g. causal sufficiency), and its naive implementation is costly due to the search over all separating sets $S_{ab}$.
+
+            \item PC, named after its inventers Peter Spirtes and Clark Glymour \citep{spirtes1991algorithm}, reduces the cost of naive IC. A systematic algorithm finds the separating sets $S_{ab}$ in polynomial time. Starting from a fully-connected graph, edges are systematically removed by considering separating sets of increasing cardinality, and only taking into account the variables that neighbour $a$ and $b$. For example, first edges are removed between variable pairs that are independent given the empty set (cardinality 0). Then, edges are removed between remaining adjacent variable pairs that are independent given one of their neighbours. Already some possible separating sets can be skipped here, because edges were removed in the previous step. Therefore, as we consider larger possible separating sets, the number of neighbours to choose from decreases.
+            
+            \item Fast Causal Inference (FCI) extends PC to allow for selection bias and latent confounding, thus dropping the causal sufficiency assumption. It is a feasible algorithm for datasets with many variables when the underlying graph is sparse and bidirected edges are not too much chained together. It was first introduced by \citet{spirtes1999algorithm}, and gradually developed since then. A modern version named FCI+ by \citet{claassen2013learning} is complete and relatively fast.
+            
+            
+
+
+            \item LCD: e.g. Trigger\citep{chen2007harnessing}. Local strategy.
+            \item Y-Structures: local strategy. \citet{mooij2015empirical} are OG?
+            \item ICP, look at \citet{meinshausen2016methods}
+        \end{itemize}
+    
+    \item Score-based: search for the causal graph that optimizes some loss function based on independences.  (e.g., Cooper and Herskovits,
+    1992; Heckerman et al., 1995; Chickering, 2002; Koivisto and Sood, 2004) (see: Peters 7.2)
+        \begin{itemize}
+            \item ASD
+        \end{itemize}
+
+    \item Other: other statistical patterns in the joint distribution can be exploited too (e.g Mooij et al., 2016; Peters et al., 2017)
+\end{itemize}
+% To classify: CI?, GES/GIES, CV-Lasso regression?

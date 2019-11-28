@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% Citations and bibliography
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+
+% Color
+\usepackage{xcolor}
+
+% Custom commands
+\newcommand{\silvan}[1]{\textcolor{blue}{[#1]}}
+
+% Math
+\usepackage{amssymb}
+\usepackage{mathtools}
+% Relations between variables
+\DeclareMathOperator*{\CI}{{\,\perp\mkern-12mu\perp\,}}
+\DeclareMathOperator*{\nCI}{{\,\not\mkern-1mu\perp\mkern-12mu\perp\,}}
+\DeclareMathOperator*{\SEP}{\perp}
+\DeclareMathOperator*{\nSEP}{\not\perp}
+\newcommand{\indep}[4]{{#1} \CI_{#4} {#2} \given {#3}}
+\newcommand\dep[4]{{#1} \nCI_{#4} {#2} \given {#3}}
+\newcommand\sep[4]{{#1} \SEP_{#4} {#2} \given {#3}}
+\newcommand\con[4]{{#1} \nSEP_{#4} {#2} \given {#3}}
+\newcommand{\dsep}[4]{{#1} \SEP_{#4}^d {#2} \given {#3}}
+\newcommand{\dcon}[4]{{#1} \nSEP_{#4}^d {#2} \given {#3}}
+\newcommand{\sigmasep}[4]{{#1} \SEP_{#4}^\sigma {#2} \given {#3}}
+\newcommand{\sigmacon}[4]{{#1} \nSEP_{#4}^\sigma {#2} \given {#3}}
+\newcommand{\Prb}{\mathbb{P}}
+\newcommand{\marg}[1]{\mathrm{marg}_{#1}}
+% Arrows (oriented, star, circle)
+\newcommand{\ot}{\leftarrow}
+\newcommand{\oto}{\leftrightarrow}
+\newcommand{\ots}{\leftarrow\mkern-13mu\ast\,}
+\newcommand{\otc}{\leftarrow\mkern-9mu\circ\,}
+\newcommand{\sto}{\,\ast\mkern-13mu\to}
+\newcommand{\stt}{\,\ast\mkern-13mu\relbar\!\!\!\relbar}
+\newcommand{\tts}{\relbar\!\!\!\relbar\mkern-13mu\ast\,}
+\newcommand{\sts}{\,\ast\mkern-10mu\relbar\mkern-10mu\ast\,}
+\newcommand{\ctc}{\,\circ\mkern-9mu\relbar\mkern-9mu\circ\,}
+\newcommand{\cto}{\,\circ\mkern-9mu\rightarrow}
+% Other
+\newcommand\given{\,|\,}
+
+\title{Causal Analysis and Gene Expression Data}
+
+\author{Silvan de Boer \\
+  {\tt silvandeboer@gmail.com}}
+
+\date{}
+
+\begin{document}
+% \twocolumn
+\maketitle
+
+\input{abstract}
+
+\input{introduction}
+
+\input{background}
+
+\input{related_work}
+
+\input{methods}
+
+\input{experiments}
+
+\input{results}
+
+\input{analysis}
+
+\input{conclusion}
+
+\bibliography{references}
+
+
+\end{document}
