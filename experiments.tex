@@ -18,6 +18,18 @@ Furthermore, the profile resulting from an experiment had to pass a quality cont
 A final factor to consider is that  data from previous work of the same institute is included in the dataset, specifically from \citeauthor{lenstra2011specificity} and \citeauthor{van2010functional}. The authors note that they could not find any significant differences in the data. Nevertheless, this information can be seen as a context variable, and ignoring it can be an explicit modelling assumption.
 
 \subsection*{Ground truth}
+
+% GT figure
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{ground_truth_YHR087W_YDR074W.pdf}
+    \caption{
+        Different ground-truth definitions illustrated for the knock-out effects of gene YHR087W, particularly on gene YDR074W. TOP: YHR087W on the x-axis and YDR074W on the y-axis for all data points. The green cross indicates the knock-out experiment of YHR087W. The absolute ground-truth is the length of the black line segment, the relative ground-truth is the slope of the black line. The red square indicates a block of 2 standard-deviations in the observed data (red). BOTTOM: distribution of ground-truth scores of all genes in the knock-out experiment of YHR087W. The red half-circle indicates the score of gene YDR074W. The blue plane shows the 99 percentile threshold based on all data, the yellow plane shows it based only on the data from this knock-out experiment. The overlap of both planes is grey.
+    }
+    \label{fig:ground-truth}
+\end{figure}
+
+
 Value and slope, absolute and 'normalized'
 
 Train-test splits

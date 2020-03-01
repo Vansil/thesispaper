@@ -6,8 +6,10 @@
 \usepackage{natbib}
 \bibliographystyle{abbrvnat}
 
-% Color
+% Graphics
 \usepackage{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Figures/}}
 
 % Custom commands
 \newcommand{\silvan}[1]{\textcolor{blue}{[#1]}}
@@ -30,6 +32,7 @@
 \newcommand{\sigmacon}[4]{{#1} \nSEP_{#4}^\sigma {#2} \given {#3}}
 \newcommand{\Prb}{\mathbb{P}}
 \newcommand{\marg}[1]{\mathrm{marg}_{#1}}
+\newcommand{\intervene}{\mathrm{do}}
 % Arrows (oriented, star, circle)
 \newcommand{\ot}{\leftarrow}
 \newcommand{\oto}{\leftrightarrow}
@@ -55,23 +58,21 @@
 % \twocolumn
 \maketitle
 
-\input{abstract}
+% % \input{introduction}
 
-\input{introduction}
-
-\input{background}
+% % \input{background}
 
 \input{related_work}
 
-\input{methods}
+% \input{methods}
 
-\input{experiments}
+% \input{experiments}
 
-\input{results}
+% \input{results}
 
-\input{analysis}
+% \input{analysis}
 
-\input{conclusion}
+% \input{conclusion}
 
 \bibliography{references}
 
