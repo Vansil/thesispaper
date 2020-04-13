@@ -91,11 +91,6 @@ Score-based approaches search for the causal graph that optimizes some loss func
 
 As part of their Joint Causal Inference (JCI) framework, \citet{mooij2016joint} adapt the ASD method to include interventional data. They simply add some constraints to the ASP problem that encode their JCI assumptions for interventional data.
 
-
-% Here we introduce a novel JCI implementation that builds on the algorithm by Hyttinenet al. (2014) and its generalization toσ-separation (Forr ́e and Mooij, 2018) and some of theextensions proposed by Magliacane et al. (2016b
-% \item [\cite{forre2018constraint}]
-%         Introduces modelling framework of modular SCMs (mSCM) and $\sigma$-connection graphs, extending $\sigma$-separation to work on them. ASD (Accounting for Strong Dependences; score-based) method tested on synthetic data and solved with an ASP (Answer Set Programming) solver. Very computationally expensive.
-
 \textbf{Greedy Equivalence Search} (GES) was first introduced by \citet{meek1997graphical} and further detailed by \citet{chickering2002optimal}. A search for the Markov equivalence class (MEC) is performed in two phases. Our graph is initialized without edges. In the first phase, we move between MECs by adding edges. In each step, we consider the set of MECs that are one edge addition away from the current MEC. Reversing a covered edge does not change the MEC, so we need to consider every combination of covered edge reversals, followed by a single edge addition, followed by covered edge reversals. We score the MECs and move to the one with the highest score. \citet{meek1997graphical} proposed the Bayesian scoring criterion to score DAGs in a MEC. Under some conditions this can be approximated by the Bayesian information criterion (BIC). 
 
 Once we reach a local maximum, \citet{chickering2002optimal} shows that the MEC contains the generative distribution. The second phase is analogous to the first, but this time single edges are removed. \citet{chickering2002optimal} shows that this final MEC is a perfect map of the generative distribution.
@@ -117,8 +112,16 @@ Once we reach a local maximum, \citet{chickering2002optimal} shows that the MEC 
 % first with consistency proof. (permutation-based without proof:  (Bouckaert, 1992; Singh and Valtorta, 1993; Teyssier and Koller, 2005). )
 
 
-\subsection*{Other}
+\subsection*{Other methods}
 other statistical patterns in the joint distribution can be exploited too (e.g Mooij et al., 2016; Peters et al., 2017)
 
 
 % TODO: IDA (Maathuis et al. 2010), MMHC, CV-Lasso regression?, CI?
+
+
+\subsection*{Maximal causal subgraph}
+Some methods proposed in this thesis infer a topological ordering of random variables to limit the search space of possible causal graphs.
+
+\begin{itemize}
+    \item[\cite{guruswami2008beating}] Approximating the maximum acyclic subgraph problem with an approximation ratio lower than 0.5 is Unique-Games hard. That is, it is impossible to get a polynomial-time approximation that is better than imposing a random order. 
+\end{itemize}
