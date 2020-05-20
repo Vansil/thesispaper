@@ -1,0 +1,17 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}Introduction}{3}
+\contentsline {section}{\numberline {2}Background}{4}
+\contentsline {subsection}{\numberline {2.1}Causal Discovery Methods}{4}
+\contentsline {subsubsection}{Constraint-Based Causal Discovery}{4}
+\contentsline {subsubsection}{Score-Based Causal Discovery}{6}
+\contentsline {subsubsection}{Hybrid methods}{7}
+\contentsline {subsubsection}{Other methods}{8}
+\contentsline {section}{\numberline {3}Data}{9}
+\contentsline {section}{\numberline {4}Topological Ordering}{10}
+\contentsline {subsection}{\numberline {4.1}Minimum Feedback Arc Set Problem}{10}
+\contentsline {subsection}{\numberline {4.2}Sun's algorithm}{11}
+\contentsline {subsection}{\numberline {4.3}TrueSkill}{11}
+\contentsline {section}{\numberline {5}Causal Discovery using Order-Informed Context}{12}
+\contentsline {section}{\numberline {6}Experiments}{13}
+\contentsline {section}{\numberline {7}Analysis}{14}
+\contentsline {section}{\numberline {8}Conclusion and Outlook}{15}

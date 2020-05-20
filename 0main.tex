@@ -6,6 +6,10 @@
 \usepackage{natbib}
 \bibliographystyle{abbrvnat}
 
+% Table of contents and section headers
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+
 % Graphics
 \usepackage{xcolor}
 \usepackage{graphicx}
@@ -58,23 +62,39 @@
 % \twocolumn
 \maketitle
 
-\input{introduction}
+\newpage
+\tableofcontents
 
-\input{background}
+\input{1introduction}
+% 2 pages
 
-\input{related_work}
+\input{2background}
+% 10 pages
 
-\input{methods}
+\input{3data}
+% 5 pages
 
-\input{experiments}
+\input{4methodorder}
+% 7 pages
 
-\input{results}
+\input{5methodcontext}
+% 7 pages
 
-\input{analysis}
+\input{6experiments}
+% 5 pages
 
-\input{conclusion}
+\input{7analysis}
+% 12 pages
 
+\input{8conclusion}
+% 2 pages
+
+\newpage
 \bibliography{references}
 
+\appendix
+
+\newpage
+\section*{Appendix A}
 
 \end{document}

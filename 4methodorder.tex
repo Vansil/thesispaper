@@ -1,0 +1,42 @@
+\newpage
+\section{Topological Ordering}
+
+% SECTIONS
+% Distinction order and inference problem
+% Model options and justification of decision
+% Algorithm description
+% Derivations for Expectation Propagation
+% Assumptions and justification
+% Short validation on synthetic data
+% Short comparison to baselines
+
+
+The genes in the dataset can be ordered according to their position in the ancestral hierarchy. This order is clearly defined when there are no cycles in the underlying graph. When cycles do exist, we can only infer some order that satisfies many ancestral relations. We hypothesize that an approximation to this underlying topological order can be leveraged to improve causal discovery.
+
+If we ignore the purely observed genes that do not occur as knock-out gene, we are left with a square intervention table. This table represents a complete directed graph if it is interpreted as a weighted adjacency matrix. A straightforward way to model the problem of finding order, is to minimize the sum of the weight of the edges that violate the order. 
+
+Assuming that the expression values reflect the importance of ancestral relations, we can weigh the edges by the respective expression values. In an unweighted variant, we could add only those edges whose expression value exceeds some threshold. This yields a sparser graph that may still contain cycles.
+
+\subsection{Minimum Feedback Arc Set Problem}
+The presence of cycles in the underlying graph is an important challenge of inferring topological order. Finding the order in an acyclic graph is linear in the number of nodes and edges (for example Kahn's algorithm \silvan{TODO cite}). One strategy for graphs with cycles is then to eliminate edges to make the graph acyclic, without too much damage to the hierarchy of genes.
+
+This strategy can be modeled as the Minimum Feedback Arc Set (MFAS) problem. The minimum feedback arc set is the smallest set of edges whose elimination makes the graph acyclic. A weighted version of the problem aims to find the set of edges with minimal summed weight whose elimination makes the graph acyclic.
+
+In theory, we could find the optimal solution for the complete directed graph constructed from the intervention table, eliminate the minimal feedback arc set, and use Kahn's algorithm to infer a topological order in the remaining acyclic graph. Unfortunately, the MFAS problem is expensive to solve. In fact, \citet{guruswami2008beating} show that even approximating the maximum acyclic subgraph problem with an approximation ratio lower than $0.5$ is Unique-Games hard. That is, it is impossible to get a polynomial-time approximation of the minimal feedback arc set that is better than imposing a random order.
+
+Because of the complexity of the problem, we focus on heuristic methods to eliminate edges, or optimize the order directly with respect to some penalty based on the intervention data.
+
+\subsection{Sun's algorithm}
+\citet{sun2017breaking} propose some similar heuristic methods to eliminate edges and make unweighted graphs acyclic. The nodes of the graph are first scored according to their place in the graph hierarchy. In the second stage, strongly connected components are iteratively divided by eliminating edges that violate the hierarchy a lot. 
+
+Three heuristic strategies are proposed to select violating edges in a strongly connected component. The \textit{greedy strategy} selects the edge that violates the hierarchy the most. The \textit{forward strategy} selects all outward edges of the node highest in the hierarchy. The \textit{backward strategy} selects all inward edges of the node lowest in the hierarchy. 
+
+Two scoring methods are proposed: Social Agony and TrueSkill. The TrueSkill method is of more interest to this thesis. It is a continuous score, and we found that it performs quite well when used to directly order nodes.
+
+\subsection{TrueSkill}
+TrueSkill was introduced by \citet{herbrich2007trueskill} as a Bayesian skill rating system for Microsoft to compute the relative skill of players in multi-player games. \citet{sun2017breaking} use a version proposed by \citet{liu2013question} that is restricted to two-player games without draws. 
+
+
+
+% Not used by Sun et al.
+% \citet{liu2011competition} estimate the relative expertise of people participating on an online question answering platform. Every question is interpreted as a game, the person with the top-voted answer is considered the winner, and the person asking the question, as well as the other people with inferior answers are considered the losers. 
