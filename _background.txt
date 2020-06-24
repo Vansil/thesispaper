@@ -1,0 +1,11 @@
+# Definitions
+
+SCM
+Markov property
+d-separation
+
+
+
+# Principles
+
+*Assumptions:

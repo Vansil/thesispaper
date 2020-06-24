@@ -12,6 +12,9 @@
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{2}
 
+% Enumerations
+\usepackage{paralist}
+
 % Graphics
 \usepackage{xcolor}
 \usepackage{graphicx}
@@ -23,6 +26,8 @@
 % Math
 \usepackage{amssymb}
 \usepackage{mathtools}
+\usepackage{bm}
+\usepackage{fancyvrb} % for "\Verb" macro
 % Relations between variables
 \DeclareMathOperator*{\CI}{{\,\perp\mkern-12mu\perp\,}}
 \DeclareMathOperator*{\nCI}{{\,\not\mkern-1mu\perp\mkern-12mu\perp\,}}
@@ -39,6 +44,10 @@
 \newcommand{\Prb}{\mathbb{P}}
 \newcommand{\marg}[1]{\mathrm{marg}_{#1}}
 \newcommand{\intervene}{\mathrm{do}}
+% Bold, cursive
+\newcommand\B[1]{\bm{#1}}
+\newcommand\C[1]{\mathcal{#1}}
+\newcommand\BC[1]{\bm{\mathcal{#1}}}
 % Arrows (oriented, star, circle)
 \newcommand{\ot}{\leftarrow}
 \newcommand{\oto}{\leftrightarrow}
@@ -50,19 +59,27 @@
 \newcommand{\sts}{\,\ast\mkern-10mu\relbar\mkern-10mu\ast\,}
 \newcommand{\ctc}{\,\circ\mkern-9mu\relbar\mkern-9mu\circ\,}
 \newcommand{\cto}{\,\circ\mkern-9mu\rightarrow}
+% Graph relations
+\newcommand\mathbfsc[1]{\text{\normalfont\scshape#1}}
+\newcommand\Det[1]{\mathbfsc{Det}(#1)}
+\newcommand\an[1]{\mathbfsc{an}(#1)}
+\newcommand\de[1]{\mathbfsc{de}(#1)}
+\newcommand\scc[1]{\mathbfsc{sc}(#1)}
+\newcommand\pa[1]{\mathbfsc{pa}(#1)}
+\newcommand\ch[1]{\mathbfsc{ch}(#1)}
+\newcommand\ncol[1]{\mathbfsc{ncol}(#1)}
+\newcommand\col[1]{\mathbfsc{col}(#1)}
+\newcommand\Detsub[2]{\mathbfsc{Det}_{#2}(#1)}
+\newcommand\ansub[2]{\mathbfsc{an}_{#1}(#2)}
+\newcommand\desub[2]{\mathbfsc{de}_{#1}(#2)}
+\newcommand\sccsub[2]{\mathbfsc{sc}_{#1}(#2)}
+\newcommand\pasub[2]{\mathbfsc{pa}_{#1}(#2)}
+\newcommand\chsub[2]{\mathbfsc{ch}_{#1}(#2)}
 % Other
 \newcommand\given{\,|\,}
 
-% \title{Causal Analysis and Gene Expression Data}
-
-% \author{Silvan de Boer \\
-%   {\tt silvandeboer@gmail.com}}
-
-% \date{}
 
 \begin{document}
-% \twocolumn
-% \maketitle
 
 \input{0titlepage}
 
