@@ -22,7 +22,7 @@ $$\C{M}: \begin{cases}
     p_{\B{E}} & = \prod_{j\in\C{J}} p_{E_j}.
 \end{cases}$$
 
-In a practical setting we are unable to infer the real structure of the exogenous variables. A more practical graphical representation of a SCM is the graph $\C{G}_{\C{M}}$, which is an abstraction of the augmented graph $\C{H}_{\C{M}}$. The nodes of this graph are only the endogenous variables. The relations among endogenous variables are still represented with directed edges ($i \to j$). Variables that are confounded by an exogenous variable (i.e. share an exogenous ancestor) are connected by a bidirected edge\footnote{The same representation of confounding is used when we marginalize over a subset of endogenous variables} ($i\oto j$).
+In a practical setting we are unable to infer the real structure of the exogenous variables. A more practical graphical representation of a SCM is the graph $\C{G}_{\C{M}}$, which is an abstraction of the augmented graph $\C{H}_{\C{M}}$. The nodes of this graph are only the endogenous variables. The relations among endogenous variables are still represented by directed edges ($i \to j$). Variables that are confounded by an exogenous variable (i.e. share an exogenous ancestor) are connected by a bidirected edge\footnote{The same representation of confounding is used when we marginalize over a subset of endogenous variables} ($i\oto j$).
 
 \subsubsection{Causal Assumptions and Interventional Data}
 If one observes two variables $X$ and $Y$, and measures a dependence among them, it is impossible to say if $X$ causes $Y$ or the other way around. More formally, one cannot infer the causal direction from a probability measure $\Prb_{\{X,Y\}}$ alone. This is why we have to rely on what \citet{pearl2009causality} calls causal assumptions. There are many assumptions that can be made, and some will be discussed in Section \ref{sec:back:prin}, along with inference methods that rely on them in Section \ref{sec:back:meth}. 
@@ -42,7 +42,7 @@ The notion of d-separation is used to infer CIRs. We say that two variables $X$ 
 \begin{compactenum}
     \item $X$ or $Y$ are in $\B{C}$
     \item The walk contains a non-collider $Z$ that is in $\B{C}$
-    \item The walk contains a collider $Z$ that is not in $\B{C}$, nor any of its descendents
+    \item The walk contains a collider $Z$ that is not in $\B{C}$, nor any of the descendents of $\B{C}$
 \end{compactenum}
 
 Consider the graph in Figure \ref{fig:2:dsep}. By case 1, $X_1$ blocks the walk from $X_1$ to $X_3$. $X_2$ blocks this walk if it is in the conditioning set $\B{C}$ by case 2. According to case 3, the walk from $X_2$ to $X_4$ is blocked if neither $X_3$ nor $X_5$ are in $\B{C}$.
@@ -74,26 +74,60 @@ Generally, we can distinguish between global and local inference methods. Global
 \subsection{Principles of Causal Inference}
 \label{sec:back:prin}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.5\textwidth]{2assumptions.jpg}
+    \caption{Visualisation of causal assumptions}
+    \label{fig:2:ass}
+\end{figure}
+
 Now that the general modelling framework of the SCM is established, it is time to define the most important additional assumptions that enable many causal inference methods. These assumptions are generally restrictions on the SCM.
 
+\subsubsection{Reichenbach's common cause principle}
+
+An important insight in causal inference is Reichenbach's common cause principle \citep{reichenbach1956direction}. It states that correlation is always the result of some causation. When two variables correlate, either one causes the other, or there is a third variable causing both. 
+
+Although this principle relies on i.i.d. sampling of the data, and the availability of infinite data (the probability distribution), it is still strong in practice. One should be cautious for spurious correlations. These can result from a search over correlations between many variables (without type I error control), or from overseeing a time dependence of the variables (violation of i.i.d. assumption). 
+
+Moreover, the principle relies on the important assumption of \textbf{unbiased data selection}. Selection bias can be present when data selection is based on the value of some unobserved variable that is the effect of some observed variables. Take for example the graph in Figure \ref{fig:2:ass}i. The dependence between $X$ and $Y$ might disappear if we only consider data points for which $S=1$. 
+
+This assumption is required for many causal inference methods. Take for example Local Causal Discovery (LCD), which depends on some local pattern of CIRs to infer an ancestral relation. If CIRs can be the result of selection bias, the pattern is not sufficient to infer the ancestral relation anymore.
 
 
-% Reichenbach's principle
-% * Selection bias (unbiased data selection)
-% - LCD: combination of (in)dependences only works if they cannot be the cause of conditioning on a hidden variable
-% Faithfulness
-% * Independence oracle
-% * causal minimality (follow from faithf.)
-% * identifiability 
-% - ASD: add (in)dep. as soft constraints in an ASP solver
-% Causal sufficiency (absence of Latent Confounders)
-% - IC: infer edge if there is no set of variables that makes a dependence a conditional independence
-% Acyclicity
-% * Topological order (reference)
-% - SP: restrict the search space of DAGs
-% Exogeneity
-% - ICP: exploit invariance to the exogenous variables of the conditional distribution of a variable given it's parents
+\subsubsection{Faithfulness}
 
+\textbf{Faithfulness} is a very common assumption. It reverses the implication of the Markov Property, such that conditional independence implies d-separation in the graph:
+
+$$\indep{\B{A}}{\B{B}}{\B{C}}{\Prb_{\B{X}}} \implies \dsep{\B{A}}{\B{B}}{\B{C}}{\C{G}}$$
+
+\silvan{TODO: when does it break? Many variables is risky}
+% The faithfulness assumption requires that all CI relations of P are encoded in G. Unfortunately, this assumption is very sensitive to hypothesis testing errors for inferring CI relations from data; almost-violations are frequent especially in graphs with cycles in the skeleton (Uhler et al., 2013) [raskutti uhler 2018]
+
+This enables many causal inference methods, that use it to restrict the graph by measuring conditional dependences and independences. The test used to measure dependences and independences relies on additional assumptions, which we jointly call the assumption of an \textbf{independence oracle}. For example, the partial correlation test relies on normality of the data. When the data and assumptions are sufficient to infer the MEC of the graph, we say that the MEC is \textbf{identifiable}.
+
+An implication of faithfulness is \textbf{causal minimality}. A distribution satisfies causal minimalty with respect to some graph if it is faithful to the graph, but not to any proper subgraph. 
+
+One method that relies on faithfulness is Accounting for Strong Dependences (ASD). All dependence and independence relations are encoded as soft constraints in an Answer Set Programming (ASP) solver, along with constraints that determine how CIRs relate to the graph structure.
+
+\subsubsection{Causal sufficiency}
+
+The presence of latent (unobserved) variables can make it more difficult to identify parts of SCMs. Specifically, latent confounders that affect multiple variables influence CIRs. Some methods rely on the assumption that there are no latent confounders: \textbf{causal sufficiency}.
+
+Inductive Causation (IC) checks for every pair of variables $X$ and $Y$ that are dependent if there is a set of variables $\B{S}$ that renders them conditionally independent: $\indep{X}{Y}{\B{S}}{}$. If no such set exists, there must be a direct causal relation, because by Reichenbach's principle there cannot be another way in which they are dependent.
+
+\subsubsection{Acyclicity}
+
+The \textbf{acyclicity} assumption restricts the class of graphs to directed acyclic graphs (DAGs). Inference under this assumption is typically easier, because the class of possible graphs is much smaller. Nevertheless, some methods can be generalized when the concept of $\sigma$-separation is introduced to replace d-separation. 
+
+One advantage of assuming acyclicity is that it is possible to define some ordering in the variables. In this topological order, variables precede their descendents in the graph. Greedy Equivalence Search (GES) is an example of a method that exploits this property. The search for the MEC is transformed to a search for a topological order that corresponds to the MEC. A greedy search algorithm is used to move between permutations of the order to efficiently find the correct MEC. 
+
+\subsubsection{Exogeneity}
+
+Some methods distinguish between two types of endogenous variables: the system variables $\B{X}$ and the context variables $\B{C}$. The context is seen as external to the system. This means that according to the \textbf{exogeneity}\footnote{Note that exogenous might refer to observed, endogenous context variables, or unobserved exogenous variables as represented by $\C{H}$} assumption, no edges in the graph can point from a system variable to a context variable. 
+
+This assumption is violated in the graph in Figure \ref{fig:2:ass}v. When we intervene on $Y$, observe an effect on $X$ and assume that $C$ is exogenous, we could erroneously conclude that there is a direct relation $Y\to X$. In this case however, $C$ mediates this relation.
+
+Typically, the context variables are used by the modeller to encode some causal background knowledge, such as the type of intervention. Invariant Causal Prediction (ICP) leverages the exogeneity assumption to compare the conditional distribution of a variable given a set of potential parents, accross values of the context. If the context itself is not a direct parent of the variable, this conditional distribution should be invariant, which allows ICP to infer causal relations. 
 
 \input{23relatedwork.tex}
 \label{sec:back:meth}
