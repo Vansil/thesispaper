@@ -60,24 +60,39 @@ $$\dsep{\B{A}}{\B{B}}{\B{C}}{\C{G}} \implies \indep{\B{A}}{\B{B}}{\B{C}}{\Prb_{\
 
 The Markov Property with d-separation is only valid for SCMs with an acyclic graph\footnote{It is also valid for some restricted cases of cyclic SCMs, cf. \citet{forre2017markov}}. However, a generalization of d-separation was developed by \citet{forre2017markov} that applies to the cyclic case as well.
 
-Markov equiv
+Different graphs may satisfy the same set of d-separations. Therefore, some observational distribution $\Prb_{\B{X}}$ may satisfy the Global Markov Property with respect to different graphs. The set of graphs that induces the same observational distribution\footnote{Formally, one graph may induce multiple distributions, and the MEC consists of graphs that induce the same distributions} as some graph $\C{G}$ is called the Markov Equivalence Class $\mec(\C{G})$. For acyclic graphs, it is shown that two graphs are equivalent if they have the same skeleton and immortalities. The skeleton is the set of edges when we disregard their direction, an immortality is a local structure $A\to B \ot C$ in which $A$ and $C$ are not directly connected.
+
+Causal inference methods that use only observational data cannot infer more than the MEC of the graph, because this is all the information that is in the observational distribution $\Prb_{\B{X}}$.
 
 
-% sigma separation: small adaptation to generalize to cyclic
+\subsubsection{Causal Inference Tasks}
+Different tasks can be distinguished under the name causal inference. In this thesis we focus on methods that infer parts of the augmented graph $\C{H}$. These methods are not directly used to infer quantitative causal effects. However, the do-calculus of \citet{pearl2009causality} can in many cases be used to combine measured conditional distributions and a (partially) infered graph to make quantitative statements.
 
-
-% Follows from SCM definition
-
-% * d-separation (visual graph example)
-% * (conditional) independence: in terms of prob.
-% * Markov property
-% * Markov equivalence (covered edge reversal, immortalities?)
+Generally, we can distinguish between global and local inference methods. Global methods aim to infer as much as possible from graph $\C{G}$. If the data is observational, these methods infer (an instance of) the MEC. An example is Inductive Causation, which naively checks the CIRs among all combinations of variables to infer the MEC. Interventional data may enable some methods to infer even more. Local methods are specialized to find only some elements of the graph, usually trading completeness for efficiency. Commonly, these methods find some direct or ancestral causal relations (directed path in $\C{G}$), like Local Causal Discovery which tests for one specific pattern of CIRs among three variables.
 
 
 \subsection{Principles of Causal Inference}
 \label{sec:back:prin}
 
-Assumptions are a restriction on the form of the SCM.
+Now that the general modelling framework of the SCM is established, it is time to define the most important additional assumptions that enable many causal inference methods. These assumptions are generally restrictions on the SCM.
+
+
+
+% Reichenbach's principle
+% * Selection bias (unbiased data selection)
+% - LCD: combination of (in)dependences only works if they cannot be the cause of conditioning on a hidden variable
+% Faithfulness
+% * Independence oracle
+% * causal minimality (follow from faithf.)
+% * identifiability 
+% - ASD: add (in)dep. as soft constraints in an ASP solver
+% Causal sufficiency (absence of Latent Confounders)
+% - IC: infer edge if there is no set of variables that makes a dependence a conditional independence
+% Acyclicity
+% * Topological order (reference)
+% - SP: restrict the search space of DAGs
+% Exogeneity
+% - ICP: exploit invariance to the exogenous variables of the conditional distribution of a variable given it's parents
 
 
 \input{23relatedwork.tex}

@@ -29,6 +29,7 @@ Reichenbach's principle
 Faithfulness
 * Independence oracle
 * causal minimality (follow from faithf.)
+* identifiability 
 - ASD: add (in)dep. as soft constraints in an ASP solver
 Causal sufficiency (absence of Latent Confounders)
 - IC: infer edge if there is no set of variables that makes a dependence a conditional independence
