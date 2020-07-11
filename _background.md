@@ -47,6 +47,9 @@ Focus here on independence, but there are other patterns that can be exploited, 
 * non-additivity of noise in nonlinear models (Peters et al., 2014) can also be exploited.
 
 
+ADD/REWRITE RElATED WORK:
+- disadvantages of constraint-based
+- other constraints
 
 
 
