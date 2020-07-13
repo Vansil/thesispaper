@@ -105,6 +105,9 @@ $$\indep{\B{A}}{\B{B}}{\B{C}}{\Prb_{\B{X}}} \implies \dsep{\B{A}}{\B{B}}{\B{C}}{
 
 This enables many causal inference methods, that use it to restrict the graph by measuring conditional dependences and independences. The test used to measure dependences and independences relies on additional assumptions, which we jointly call the assumption of an \textbf{independence oracle}. For example, the partial correlation test relies on normality of the data. When the data and assumptions are sufficient to infer the MEC of the graph, we say that the MEC is \textbf{identifiable}.
 
+\silvan{ADD: Conditional independence testing has been proven to be impossible when no additional assumptions
+are imposed on the distributions involved (Shah and Peters, 2019) [P. Boeken]}
+
 An implication of faithfulness is \textbf{causal minimality}. A distribution satisfies causal minimalty with respect to some graph if it is faithful to the graph, but not to any proper subgraph. 
 
 One method that relies on faithfulness is Accounting for Strong Dependences (ASD). All dependence and independence relations are encoded as soft constraints in an Answer Set Programming (ASP) solver, along with constraints that determine how CIRs relate to the graph structure.
