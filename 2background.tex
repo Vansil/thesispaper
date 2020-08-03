@@ -25,19 +25,19 @@ $$\C{M}: \begin{cases}
 In a practical setting we are unable to infer the real structure of the exogenous variables. A useful graphical representation of a SCM is the graph $\C{G}_{\C{M}}$, which is an abstraction of the augmented graph $\C{H}_{\C{M}}$. Only the endogenous variables are nodes in this graph. The relations among endogenous variables are still represented by directed edges ($i \to j$). Variables that are confounded by an exogenous variable (i.e. share an exogenous ancestor) are connected with a bidirected edge\footnote{The same representation of confounding is used when we marginalize over a subset of endogenous variables} ($i\oto j$).
 
 \subsubsection{Causal Assumptions and Interventional Data}
-If one observes two variables $X$ and $Y$, and measures a dependence among them, it is impossible to say if $X$ causes $Y$ or the other way around. More formally, one cannot infer the causal direction from a probability measure $\Prb_{\{X,Y\}}$ alone. This is why we have to rely on causal assumptions \citep{pearl2009causality}. There are many assumptions that can be made, and some will be discussed in Section \ref{sec:back:prin}, along with inference methods that rely on them in Section \ref{sec:back:meth}. 
+If one observes two variables $X$ and $Y$, and measures a dependence among them, it is impossible to say if $X$ causes $Y$ or the other way around. More formally, one cannot infer the causal direction from a probability measure $\Prb_{\{X,Y\}}$ alone. This is why we have to rely on \textit{causal assumptions} \citep{pearl2009causality}. Some common assumptions are discussed in Section \ref{sec:back:prin}. Section \ref{sec:back:meth} describes inference methods that rely on these assumptions. 
 
-One assumption particularly relevant to this thesis is related to the method of data acquisition. A distinction is made between observational data and interventional data. Observational data is gathered without interference in the system. We assume that there is an underlying SCM, and every data point is a sample from it. The sampling distribution approximates the observational distribution $\Prb_{\B{X}}$, and it is theoretically impossible to infer any causal statements without further assumptions. 
+One assumption particularly relevant to this thesis is related to the method of data acquisition. A distinction is made between \textit{observational data} and \textit{interventional data}. Observational data is gathered without interference with the system. We assume that there is an underlying SCM, and every data point is a sample from it. The sampling distribution approximates the observational distribution $\Prb_{\B{X}}$. It is theoretically impossible to infer any causal statements without further assumptions. 
 
-Interventional data is gathered while we interfere with the system. Every data point is measured while an intervention is performed. Formally, this intervention is a manipulation of the causal mechanism, which induces a new SCM in a way that is commonly restricted by assumptions. This might render the causal inference problem theoretically possible. 
+Interventional data is gathered while we interfere with the system. Every data point is measured while an \textit{intervention} is performed. Formally, this intervention is modelled as a manipulation of the causal mechanism $\B{f}$ subject to some constraints or assumptions. This may render the causal inference problem theoretically possible. 
 
-A concrete example is the perfect intervention. A perfect intervention sets a variable $X_i$ to a fixed value $\xi_i$, denoted as $\intervene(X_i=\xi_i)$. This removes all the dependence of $X_i$ on its parents $\pasub{\C{H}}{i}$. The adapted SCM induces a different, interventional distribution $\Prb_{\B{X}|\intervene(X_i=\xi_i)}$. \citet{pearl2009causality} developed a do-calculus that can be used to make causal inferences from observational and intervenional data. As a simple example, take a system of two variables that are related as $X\to Y$. From the observational data we only know that $X$ and $Y$ are dependent. However, if we also have access to distributions $\Prb_{\{X,Y\}|\intervene(X=x)}$ and $\Prb_{\{X,Y\}|\intervene(Y=y)}$ we can see that intervening on $Y$ does not affect $X$, whereas intervening on $X$ does affect $Y$. We conclude that $X$ causes $Y$. 
+A concrete example is the \textit{perfect intervention}. A perfect intervention sets a variable $X_i$ to a fixed value $\xi_i$, denoted as $\intervene(X_i=\xi_i)$. This removes all the dependence of $X_i$ on its parents $\pasub{\C{H}}{i}$. The adapted SCM induces a different, interventional distribution $\Prb_{\B{X}|\intervene(X_i=\xi_i)}$. \citet{pearl2009causality} developed a do-calculus that can be used to make causal inferences from observational and intervenional data. As a simple example, take a system of two variables that are related as $X\to Y$. From the observational data we only know that $X$ and $Y$ are dependent. However, if we have access to distributions $\Prb_{\{X,Y\}|\intervene(X=x)}$ and $\Prb_{\{X,Y\}|\intervene(Y=y)}$ we can see that intervening on $Y$ does not affect $X$, whereas intervening on $X$ does affect $Y$. We conclude that $X$ causes $Y$. 
 
 
 \subsubsection{Markov Property}
-The Markov Property is a very common assumption that links the SCM to conditional independence relations (CIRs). The property follows from the definition of the SCM, so it does not add a restriction to our modelling. 
+The Markov Property is a very common assumption that links the SCM to conditional independence relations (CIRs) in the data. The property follows from the definition of the SCM, so it does not add a restriction to our modelling. 
 
-The notion of d-separation is used to infer CIRs. We say that two variables $X$ and $Y$ are d-separated by a conditioning set of variables $\B{C}$, if all walks from $X$ to $Y$ are d-blocked by $\B{C}$. This is denoted as $\dsep{X}{Y}{\B{C}}{\C{G}}$. On each walk we will consider if the variables are a collider, that is: if both edges of the walk point towards it ($...\to Z \ot ...$). A walk is d-blocked in three cases:
+The notion of \textit{d-separation} is used to infer CIRs. We say that two variables $X$ and $Y$ are d-separated by a conditioning set of variables $\B{C}$, if all walks from $X$ to $Y$ are d-blocked by $\B{C}$. This is denoted as $\dsep{X}{Y}{\B{C}}{\C{G}}$. On each walk we will consider if the variables are a \textit{collider}, that is: if the adjacent edges of the walk point towards it ($...\to Z \ot ...$). A walk is \textit{d-blocked} in three cases:
 
 \begin{compactenum}
     \item $X$ or $Y$ are in $\B{C}$
@@ -49,8 +49,8 @@ Consider the graph in Figure \ref{fig:2:dsep}. By case 1, $X_1$ blocks the walk 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=.3\textwidth]{2dsep.jpg}
-    \caption{Example graph}
+    \includegraphics[width=\textwidth]{2dsep}
+    \caption{Graph of five random variables.}
     \label{fig:2:dsep}
 \end{figure}
 
@@ -58,17 +58,19 @@ The Global Markov Property links d-separation to conditional independence:
 
 $$\dsep{\B{A}}{\B{B}}{\B{C}}{\C{G}} \implies \indep{\B{A}}{\B{B}}{\B{C}}{\Prb_{\B{X}}}$$
 
-The Markov Property with d-separation is only valid for SCMs with an acyclic graph\footnote{It is also valid for some restricted cases of cyclic SCMs, cf. \citet{forre2017markov}}. However, a generalization of d-separation was developed by \citet{forre2017markov} that applies to the cyclic case as well.
+The Markov Property with d-separation is only valid for SCMs with an acyclic graph\footnote{It is also valid for some restricted cases of cyclic SCMs, cf. \citet{forre2017markov}}. A generalization of d-separation was developed by \citet{forre2017markov} that applies to the cyclic case as well.
 
-Different graphs may satisfy the same set of d-separations. Therefore, some observational distribution $\Prb_{\B{X}}$ may satisfy the Global Markov Property with respect to different graphs. The set of graphs that induces the same observational distribution\footnote{Formally, one graph may induce multiple distributions, and the MEC consists of graphs that induce the same distributions} as some graph $\C{G}$ is called the Markov Equivalence Class $\mec(\C{G})$. For acyclic graphs, it is shown that two graphs are equivalent if they have the same skeleton and immortalities. The skeleton is the set of edges when we disregard their direction, an immortality is a local structure $A\to B \ot C$ in which $A$ and $C$ are not directly connected.
+Different graphs may satisfy the same set of d-separations. Therefore, some observational distribution $\Prb_{\B{X}}$ may satisfy the Global Markov Property with respect to different graphs. The set of graphs that induces the same observational distribution\footnote{Formally, one graph may induce multiple distributions, and the MEC consists of graphs that induce the same distributions} as some graph $\C{G}$ is called its Markov Equivalence Class $\mec(\C{G})$. For acyclic graphs, it is shown that two graphs are equivalent if they have the same skeleton and immortalities \citep{verma1991equivalence}. The skeleton is the set of edges when we disregard their direction, an immortality is a local structure $A\to B \ot C$ in which $A$ and $C$ are not directly connected.
 
 Causal inference methods that use only observational data cannot infer more than the MEC of the graph, because this is all the information that is in the observational distribution $\Prb_{\B{X}}$.
 
 
 \subsubsection{Causal Inference Tasks}
-Different tasks can be distinguished under the name causal inference. In this thesis we focus on methods that infer parts of the augmented graph $\C{H}$. These methods are not directly used to infer quantitative causal effects. However, the do-calculus of \citet{pearl2009causality} can in many cases be used to combine measured conditional distributions and a (partially) infered graph to make quantitative statements.
+Different tasks can be distinguished within causal inference. In this thesis we focus on methods that infer parts of the augmented graph $\C{H}$. These methods are not directly used to infer quantitative causal effects. However, the do-calculus of \citet{pearl2009causality} can in many cases be used to combine measured conditional distributions and a (partially) infered graph to make quantitative statements.
 
-Generally, we can distinguish between global and local inference methods. Global methods aim to infer as much as possible from graph $\C{G}$. If the data is observational, these methods infer (an instance of) the MEC. An example is Inductive Causation, which naively checks the CIRs among all combinations of variables to infer the MEC. Interventional data may enable some methods to infer even more. Local methods are specialized to find only some elements of the graph, usually trading completeness for efficiency. Commonly, these methods find some direct or ancestral causal relations (directed path in $\C{G}$), like Local Causal Discovery which tests for one specific pattern of CIRs among three variables.
+Generally, we can distinguish between global and local inference methods. Global methods aim to infer as much as possible from graph $\C{G}$. If the data is observational, these methods infer (an instance of) the MEC. An example is Inductive Causation, which naively checks the CIRs among all combinations of variables to infer the MEC. Interventional data enables some methods to infer more features of the graph. 
+
+Local methods are specialized to find only some elements of the graph, usually trading completeness for efficiency. Commonly, these methods find some direct or ancestral causal relations (directed paths in $\C{G}$), like Local Causal Discovery which tests for one specific pattern of CIRs among three variables.
 
 
 \subsection{Principles of Causal Inference}
@@ -76,8 +78,8 @@ Generally, we can distinguish between global and local inference methods. Global
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=.5\textwidth]{2assumptions.jpg}
-    \caption{Visualisation of causal assumptions}
+    \includegraphics[width=\textwidth]{2assumptions}
+    \caption{Violations of causal assumptions indicated by orange nodes or edges. Violation of faithfulness (iii) depends on the functional dependence between the variables, for example if $X \CI Z$}
     \label{fig:2:ass}
 \end{figure}
 
@@ -87,11 +89,11 @@ Now that the general modelling framework of the SCM is established, it is time t
 
 An important insight in causal inference is Reichenbach's common cause principle \citep{reichenbach1956direction}. It states that correlation is always the result of some causation. When two variables correlate, either one causes the other, or there is a third variable causing both. 
 
-Although this principle relies on i.i.d. sampling of the data, and the availability of infinite data (the probability distribution), it is still strong in practice. One should be cautious for spurious correlations. These can result from a search over correlations between many variables (without type I error control), or from overseeing a time dependence of the variables (violation of i.i.d. assumption). 
+This is quite a strong assumption. It relies on i.i.d. sampling of the data, and a good approximation of the probability distribution. One should be cautious for spurious correlations. These can result from a search over correlations between many variables (without type I error control), or from overseeing a time dependence of the variables (violation of i.i.d. assumption). 
 
 Moreover, the principle relies on the important assumption of \textbf{unbiased data selection}. Selection bias can be present when data selection is based on the value of some unobserved variable that is the effect of some observed variables. Take for example the graph in Figure \ref{fig:2:ass}i. The dependence between $X$ and $Y$ might disappear if we only consider data points for which $S=1$. 
 
-This assumption is required for many causal inference methods. Take for example Local Causal Discovery (LCD), which depends on some local pattern of CIRs to infer an ancestral relation. If CIRs can be the result of selection bias, the pattern is not sufficient to infer the ancestral relation anymore.
+This assumption is required for many causal inference methods. Take for example Local Causal Discovery (LCD), which depends on some local pattern of CIRs to infer an ancestral relation. If CIRs can be the result of selection bias, the pattern is not sufficient anymore to infer the ancestral relation.
 
 
 \subsubsection{Faithfulness}
@@ -100,13 +102,13 @@ This assumption is required for many causal inference methods. Take for example 
 
 $$\indep{\B{A}}{\B{B}}{\B{C}}{\Prb_{\B{X}}} \implies \dsep{\B{A}}{\B{B}}{\B{C}}{\C{G}}$$
 
-\silvan{TODO: when does it break? Many variables is risky}
-% The faithfulness assumption requires that all CI relations of P are encoded in G. Unfortunately, this assumption is very sensitive to hypothesis testing errors for inferring CI relations from data; almost-violations are frequent especially in graphs with cycles in the skeleton (Uhler et al., 2013) [raskutti uhler 2018]
+Many causal inference methods use this assumption to restrict the graph by measuring conditional dependences and independences. The test used to measure dependences and independences relies on additional assumptions, which we jointly call the assumption of an \textbf{independence oracle}. For example, the partial correlation test relies on normality of the data. When the data and assumptions are sufficient to infer the MEC of the graph, we say that the MEC is \textbf{identifiable}.
 
-This enables many causal inference methods, that use it to restrict the graph by measuring conditional dependences and independences. The test used to measure dependences and independences relies on additional assumptions, which we jointly call the assumption of an \textbf{independence oracle}. For example, the partial correlation test relies on normality of the data. When the data and assumptions are sufficient to infer the MEC of the graph, we say that the MEC is \textbf{identifiable}.
+Faithfulness may be violated. Take the graph in Figure \ref{fig:2:ass}iii. Some causal mechanism may result in an independence between $X$ and $Z$, even though $Z$ is functionally dependent on $X$ and an intervention on $Y$ would show this.
 
-\silvan{ADD: Conditional independence testing has been proven to be impossible when no additional assumptions
-are imposed on the distributions involved (Shah and Peters, 2019) [P. Boeken]}
+Furthermore, faithfulness requires that all CIRs in the data are in the graph, which can be problematic. Especially when the graph is large and contains cycles, there may be hypothesis testing errors \citep{uhler2013geometry}.
+
+% \silvan{ADD: Conditional independence testing has been proven to be impossible when no additional assumptions are imposed on the distributions involved (Shah and Peters, 2019) [P. Boeken]}
 
 An implication of faithfulness is \textbf{causal minimality}. A distribution satisfies causal minimalty with respect to some graph if it is faithful to the graph, but not to any proper subgraph. 
 
@@ -114,7 +116,7 @@ One method that relies on faithfulness is Accounting for Strong Dependences (ASD
 
 \subsubsection{Causal sufficiency}
 
-The presence of latent (unobserved) variables can make it more difficult to identify parts of SCMs. Specifically, latent confounders that affect multiple variables influence CIRs. Some methods rely on the assumption that there are no latent confounders: \textbf{causal sufficiency}.
+The presence of latent (unobserved) variables can make it harder to identify parts of SCMs. Latent confounders that affect multiple variables influence the CIRs. Some methods rely on the assumption that there are no latent confounders: \textbf{causal sufficiency}. Figure \ref{fig:2:ass}iv shows a violation of this assumption, where $Z$ is latent.
 
 Inductive Causation (IC) checks for every pair of variables $X$ and $Y$ that are dependent if there is a set of variables $\B{S}$ that renders them conditionally independent: $\indep{X}{Y}{\B{S}}{}$. If no such set exists, there must be a direct causal relation, because by Reichenbach's principle there cannot be another way in which they are dependent.
 
@@ -122,13 +124,13 @@ Inductive Causation (IC) checks for every pair of variables $X$ and $Y$ that are
 
 The \textbf{acyclicity} assumption restricts the class of graphs to directed acyclic graphs (DAGs). Inference under this assumption is typically easier, because the class of possible graphs is much smaller. Nevertheless, some methods can be generalized when the concept of $\sigma$-separation is introduced to replace d-separation. 
 
-One advantage of assuming acyclicity is that it is possible to define some ordering in the variables. In this topological order, variables precede their descendents in the graph. Greedy Equivalence Search (GES) is an example of a method that exploits this property. The search for the MEC is transformed to a search for a topological order that corresponds to the MEC. A greedy search algorithm is used to move between permutations of the order to efficiently find the correct MEC. 
+One advantage of assuming acyclicity is that it is possible to define some ordering in the variables. In this order, variables precede their descendents in the graph. Greedy Equivalence Search (GES) is an example of a method that exploits this property. The search for the MEC is transformed to a search for an order that corresponds to the MEC. A greedy search algorithm is used to move between permutations of the order to efficiently find the correct MEC. 
 
 \subsubsection{Exogeneity}
 
 Some methods distinguish between two types of endogenous variables: the system variables $\B{X}$ and the context variables $\B{C}$. The context is seen as external to the system. This means that according to the \textbf{exogeneity}\footnote{Note that exogenous might refer to observed, endogenous context variables, or unobserved exogenous variables as represented by $\C{H}$} assumption, no edges in the graph can point from a system variable to a context variable. 
 
-This assumption is violated in the graph in Figure \ref{fig:2:ass}v. When we intervene on $Y$, observe an effect on $X$ and assume that $C$ is exogenous, we could erroneously conclude that there is a direct relation $Y\to X$. In this case however, $C$ mediates this relation.
+This assumption is violated in the graph in Figure \ref{fig:2:ass}v. We observe an effect on $X$ when we intervene on $Y$. If we assume that $C$ is exogenous, we could erroneously conclude that there is a direct relation $Y\to X$. In this case however, $C$ mediates this relation.
 
 Typically, the context variables are used by the modeller to encode some causal background knowledge, such as the type of intervention. Invariant Causal Prediction (ICP) leverages the exogeneity assumption to compare the conditional distribution of a variable given a set of potential parents, accross values of the context. If the context itself is not a direct parent of the variable, this conditional distribution should be invariant, which allows ICP to infer causal relations. 
 
