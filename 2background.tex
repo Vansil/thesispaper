@@ -19,7 +19,7 @@ Usually, an incomplete definition of SCMs suffices, consisting of the structural
 
 $$\C{M}: \begin{cases}
     X_i &= f_i(\B{X}_{\pasub{}{i} \cap \C{I}}, \B{E}_{\pasub{}{i} \cap \C{J}}) \\
-    p_{\B{E}} & = \prod_{j\in\C{J}} p_{E_j}.
+    p_{\B{E}} & = \prod_{j\in\C{J}} p_{E_j}
 \end{cases}$$
 
 In a practical setting we are unable to infer the real structure of the exogenous variables. A useful graphical representation of a SCM is the graph $\C{G}_{\C{M}}$, which is an abstraction of the augmented graph $\C{H}_{\C{M}}$. Only the endogenous variables are nodes in this graph. The relations among endogenous variables are still represented by directed edges ($i \to j$). Variables that are confounded by an exogenous variable (i.e. share an exogenous ancestor) are connected with a bidirected edge\footnote{The same representation of confounding is used when we marginalize over a subset of endogenous variables} ($i\oto j$).

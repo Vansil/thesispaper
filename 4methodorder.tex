@@ -45,11 +45,11 @@ The genes in the dataset can be ordered according to their position in the ances
 
 If we ignore the purely observed genes that do not occur as knock-out gene, we are left with a square \textit{intervention table} $\B{X} \in \mathbb{R}^{N\times N}$. $\B{X}_{ij}$ is the relative expression level of gene $i$ in the experiment with gene $j$ knocked out. If we take into account all intervention data, we have $N=1479$ genes. This table represents a complete directed graph if it is interpreted as a weighted adjacency matrix. A straightforward way to model the problem of finding order, is to minimize the sum of the absolute weight of the edges that violate the order $\pi$, which is represented by a permutation of genes. We call the average absolute weight of violating edges the \textit{penalty} $p_\pi$:
 
-$$p(\pi) = \frac{\sum_{\pi_i < \pi_j}X_{ij}}{\frac{1}{2}N(N-1)}$$
+$$p(\pi) = \frac{\sum_{\pi_i < \pi_j}|X_{ij}|}{\frac{1}{2}N(N-1)}$$
 
 $N$ is the number of intervention genes. To make this number more interpretable for different intervention tables, we define the \textit{penalty ratio} $r_\pi$ as the penalty divided by the average absolute value of all relations, excluding values of the knocked-out genes themselves. We present this value as a percentage. A random order is expected to have a penalty ratio of $100\%$.
 
-$$r(\pi) = \frac{\sum_{\pi_i < \pi_j}X_{ij}}{\frac{1}{2}N(N-1)} \frac{N(N-1)}{\sum_{i \neq j}X_{ij}} = \frac{2 \sum_{\pi_i < \pi_j}X_{ij}}{\sum_{i \neq j}X_{ij}}$$
+$$r(\pi) = \frac{\sum_{\pi_i < \pi_j}|X_{ij}|}{\frac{1}{2}N(N-1)} \frac{N(N-1)}{\sum_{i \neq j}|X_{ij}|} = \frac{2 \sum_{\pi_i < \pi_j}|X_{ij}|}{\sum_{i \neq j}|X_{ij}|}$$
 
 Assuming that the expression values reflect the importance of ancestral relations, we can weigh the edges by the respective expression values. In an unweighted variant, we could add only those edges whose expression value exceeds some threshold. This yields a sparser graph that may still contain cycles. It is important to realise that this thresholding has different meaning and implications than the thresholding on which we may base our evaluation of predictions. In testing predictions, we are interested in meaningful relations. In finding order, we are more pragmatic and could use any threshold that yields the best prediction algorithm.
 

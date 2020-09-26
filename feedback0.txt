@@ -1,0 +1,10 @@
+Algemeen:
+1) Is er voldoende diepgang in de beschrijvingen (van bijv. inference methods, order search approaches, causal assumptions)? Zou ik meer met formules moeten werken? Zijn de dingen die ik bespreek relevant, of kan ik dingen beter weglaten?
+
+Chapter 2: Data
+1) Beschrijf ik de state-of-the-art van Kemmeren accuraat?
+2) Biedt de Shapiro-Wilk normality test een waardevol inzicht?
+
+Chapter 3: Order
+1) Moet ik meer details toevoegen om de 'order' experimenten meer reproducible te maken? Bijvoorbeeld alle parameters noemen in een appendix?
+
