@@ -4,5 +4,52 @@
 % SECTIONS
 % Experimental design (like LCD, e.g. preselection)
 % Metrics
-% Hyperparameter search
-% Baselines (LCD, ICP, Regression)
+
+\subsection{Experimental Set-up}
+
+The \citet{kemmeren2014large} dataset contains the expression levels of 6.182 genes in 262 observation experiments, and as a result of 1.479 knock-out experiments. We describe this dataset as $\C{D}=(\B{O}, \B{X})$ with observation data $\B{O} \in \mathbb{R}^{6182\times 262}$ and intervention data $\B{X} \in \mathbb{R}^{6182\times 1479}$. $\B{O}_{ij}$ is the relative expression level of gene $i$ in the $j$-th observation, $\B{X}_{ij}$ is the relative expression level of gene $i$ in the experiment with gene $j$ knocked out. If we select only the intervention effects on genes that were also object of a knock-out experiment, we are left with the intervention table $\B{X}^I \in \mathbb{R}^{1479\times 1479}$.
+
+\subsubsection{Data Folds and Bootstrapping}
+
+The task is to predict per knock-out which genes are significantly affected, using the intervention data of the other knock-outs and the observation data. A leave-one-out experimental set-up would use all this data. Since variable preselection and order inference are time consuming, we choose a 5-fold train-test split set-up instead. The effects of each knock-out in a test fold are inferred from the remaining four train folds. In the spirit of this set-up, we also split the observational data, such that there is some variation in the observation data used per test fold.
+
+From previous work on this dataset such as that of \citet{versteeg2019boosting} we know that only the most stable predictions may beat the baselines. We therefore apply the same bootstrapping method. We subsample the train data 100 times,  sampling 50\% without replacement. The predictions inferred on the subsamples are aggregated, allowing us to sort the predictions by confidence. 
+
+We compare two methods of aggregating predictions. A \textit{discrete prediction} counts the number of times a relation was predicted, thus yielding a score between 0 and 100. A \textit{continuous prediction} estimates the confidence per prediction using the necessary condition of LCD that $C\CI Y$. The score is the sum of $-\log p_{C\CI Y}$.
+
+\subsubsection{Evaluation}
+
+The intervention data is transformed to obtain a score that indicates the significance of the causal relation. In evaluation, a certain percentage of highest scoring relations is taken as \textbf{ground-truth}. 
+
+We compare two transformations of the intervention data to score the significance of each relation. The \textit{standardized score} $\B{S^S}\in \mathbb{R}^{6182\times 1479}$ is taken directly from the work of \citet{versteeg2019boosting}, such that we can directly compare our results. The effects on gene $j$ are normalized using the empirical mean and standard deviation of that gene in the observational data. The absolute value is taken to consider both upregulation and downregulation:
+
+$$
+S^S_{ij}=\frac{|X_{ij}-\mu_j|}{\sigma_j}
+$$
+
+This score prioritizes that every gene should occur as an effect in any ground-truth set, when it is possible that some genes never occur as a cause.
+
+A large standard deviation in the expression of some gene is likely to mean that the gene is significantly affected by many other genes. We introduce a simpler \textit{absolute score} that does not imply a prioritization of including all genes as an effect. This is the same score used in the order-based LCD algorithm:
+
+$$
+S^A_{ij}=|X_{ij}|
+$$
+
+Furthermore, we consider two \textbf{filters} on the set of predictions. \citet{kemmeren2014large} mention that the knock-out genes were selected based on their role in regulating gene expression. This implicates that the group of knock-out genes differs qualitatively from the remaining genes. Therefore, we consider a filter of only effects on those genes. 
+
+For the second filter we use the inferred order and test gene position. We only evaluate relations that explicitly comply to the inferred order and position. Note first that this leaves only a small number of ground-truth relations, since the distribution of inferred positions is skewed to the right, having relatively little candidate descendants. This second filter might provide some insights on the performance on those causal relations that our LCD algorithm is most explicitly concerned with.
+
+\subsection{Method Implementation}
+% L2-boosting
+% Order inference, position inference, LCD (adaptation of Versteeg) (discarding relations due to indep. test)
+% Baselines: ICP, original LCD, L2-boosting, random
+
+The order-based LCD algorithm is implemented as an adaptation of the LCD algorithm by \citet{versteeg2019boosting}. Where they use the original context that distinguishes between observation and intervention data, we insert our order and position inference algorithms to construct an order-based context for each test variable. We compare our results to the same baselines used in their paper. The method implementation and baselines are shortly discussed here. 
+
+All methods start with variable preselection by L$_2$-boosting \citep{schapire1998boosting}. This preselection saves significant computation time. It works so well, that it is taken as a baseline method. \citet{versteeg2019boosting} show that performance of LCD is improved when this preselection is applied, so at least for the strongest predictions we do not sacrifice performance.
+
+L$_2$-boosting selects at most 8 test variables that are most predictive for each effect variable, using the joint observation and intervention data. For LCD testing a relation $X\to Y$, this means that at most 8 causes $X$ from the test split are considered for each effect $Y$. L$_2$-boosting iteratively applies least squares regression to the residuals, eliminating variables that are least predictive. 
+
+To compute the order-based context, our LCD algorithm first infers an order on the variables in the train split using TrueSkill. Next, the position of each gene $X$ in the test split is individually estimated. From the order and the gene position a context $C_X$ is computed and the relation $X\to Y$ is tested for all $Y$'s of which $X$ is a preselected variable. 
+
+For comparison, we show the LCD and ICP results from \citet{versteeg2019boosting} that use the mean-variance test and L$_2$-boosting. Their L$_2$-boosting baseline results are also shown. Note that we evaluate these results not only on their standardized ground-truth score, but also on an absolute score, resulting in somewhat different graphs.
