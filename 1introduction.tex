@@ -6,3 +6,14 @@
 % Relevance
 % Intro to causality
 %   Open questions by Spirtes: http://www.jmlr.org/papers/volume11/spirtes10a/spirtes10a.pdf
+
+
+\citet{versteeg2019boosting} show LCD as a fast causal inference method on \citet{kemmeren2014large}, with L2-boosting as a necessary preselection to approximate the performance of ICP. It improves the non-causal baseline of pure preselection in the strongest 70 predictions. 
+
+LCD uses an exogenous context variable to infer ancestral relations. \citet{versteeg2019boosting} construct this in the most straightforward way. We try to make it more specific by informing it of the estimated order of variables. 
+
+Contributions:
+\begin{itemize}
+    \item Metric for ordering, comparison of order methods on Kemmeren
+    \item Predictions on the intervention table may be a different task with different properties of the variables
+\end{itemize}
