@@ -8,12 +8,87 @@
 %   Open questions by Spirtes: http://www.jmlr.org/papers/volume11/spirtes10a/spirtes10a.pdf
 
 
-\citet{versteeg2019boosting} show LCD as a fast causal inference method on \citet{kemmeren2014large}, with L2-boosting as a necessary preselection to approximate the performance of ICP. It improves the non-causal baseline of pure preselection in the strongest 70 predictions. 
+% Relevance of causality: AI is developing quickly, strong focus on deep learning which is clearly limited, radical predictions require the emergence of new paradigms like deep learning and not only the improvement of existing paradigms, causality is one fascinating direction that is gaining traction?, Pearl says it is a different ball game; applications
+% Rise of interpretability
+% Covid: what are the risks or estimated effects of this policy?
 
-LCD uses an exogenous context variable to infer ancestral relations. \citet{versteeg2019boosting} construct this in the most straightforward way. We try to make it more specific by informing it of the estimated order of variables. 
 
-Contributions:
-\begin{itemize}
-    \item Metric for ordering, comparison of order methods on Kemmeren
-    \item Predictions on the intervention table may be a different task with different properties of the variables
-\end{itemize}
+% Pearl: causality is different from statistics \citet{pearl2009causality} (see maybe: The seven tools of causal inference, with reflections on machine learning)
+% v.Harmelen: moving between statistical and symbolic AI, symbolic now onderbelicht (little attention paid to) \citet{van2019boxology}
+% Big predictions about HLMI: "Our definition is more demanding and requires machines to be better at all tasks than humans (while also being more cost-effective)" 50% chance in 45 years! \citet{grace2018will}
+% Challenges for AI and pitfalls of DL \citet{marcus2018deep}
+
+\subsection{Positioning the Thesis in AI}
+
+Artificial intelligence (AI) is a field of science that attempts to automate human intelligence. 
+% Philosophy
+This comprises a philosophical component. What do we consider to be human intelligence? In fact, this notion changes as AI advances. Chess Grandmasters were attributed superior intelligence. Since the world champion Garry Kasparov was beaten by a computer in 1997, mastering chess has downgraded to learning an impressive skill for a human. This leaves us to wonder whether all human intelligence can be automated, and what even distinguishes intelligence from other skills if it can be automated.
+
+% Psychology/Biology
+Psychology and biology are another dimension of AI. Knowledge of the brain can help automate its functions. The neurological structure of the brain has proven a very productive metaphor for the neural network, a widely used mathematical model that is the cornerstone of deep learning. On the side of psychology, studying human learning and problem solving may inform the design of AI algorithms. Reinforcement learning is full of metaphors of agents in a world learning from their experience.
+
+% Mathematics and IT
+Finally, to apply artificial intelligence in the real world, we use computers to efficiently execute algorithms and perform tasks. This requires information technology to represent human knowledge in a machine, and mathematics to formulate algorithms such that machines can execute them.
+
+\subsubsection{Computational AI domain}
+
+% Statistical vs Symbolic
+Two schools are typically distinguished in this computational domain of AI, aptly described by \citet{van2019boxology}. The symbolic school is characterized by algorithms using a model of the world that is discrete, compositional, interpretable, and homologous to the structure of the thing it models. The algorithm uses deduction to draw conclusions from the model. The statistical school is typified by functions that are model-free, and constructed using induction. Observations from the world are collected as a dataset. Algorithms make generalizations and discover patterns in the data, which are used to fit a function. This function can then be used to make predictions. The field of machine learning and specifically deep learning are mostly captured in the statistical school.
+
+% Limits to statistical
+In the last decade, statistical AI has had unbelievable successes. Increased computational power and a growing body of data allowed deep learning models to shatter the state-of-the-art in AI subfields like computer vision and natural language processing. These rapid developments have inspired incredible optimism. \citet{grace2018will} surveyed AI researchers at some top conferences about the future of AI. These researchers predicted that with 50\% chance, machines will be better and more cost-effective than humans at every job within 120 years. That includes building houses, creating inspirational documentaries, governing countries, and doing AI research.
+
+We find these predictions laughably naive, but do not reject the possibility that technology will ever reach this point. Whatever be the timeline, most would agree that these goals cannot be reached with deep learning alone. Deep learning has already reached theoretical limits that can no longer be overcome with more compute or data. Problems such as adaptability and explainability renewed interest in the symbolic school, and sparked interest in combining the schools. 
+
+\subsubsection{Causality}
+
+% Causality
+One limitation of purely statistical AI is that it has no understanding of cause and effect. \citet{pearl2009causality} is an influential researcher in the field of causality. In a recent article, he describes a three-level hierarchy of information \citep{pearl2019seven}. Each layer can answer a certain type of question, and a higher layer subsumes the lower layers as it can answer their questions as well. We shortly discuss the layers to examplify this limitation of statistical AI, and to show how the methods in this thesis play into this perspective. Since the Covid-19 pandemic has dominated the news while this thesis was written, we will use it for examples of each layer.
+
+The first level is concerned with associations. This is formalized in statistics with conditional probabilities $\Prb(X=x|Y=y)$. A typical question would be: "What is the chance that I am infected with Covid ($X=x$), given that I live in Utrecht ($Y=y$)?" Questions in this layer can be answered from observational data alone. Statistical AI is limited to this layer.
+
+The second level is about interventions. This layer cannot be formally described by traditional statistics. \citet{pearl2009causality} developed a formalism that contains a new do-operator, and a do-calculus to compute probabilities, for example $\Prb(X=x|do(Y=y),Z=z)$. This formalism allows us to handle questions like "What will happen to the number of cases per capita ($X=x$) in Delft ($Z=z$) if we introduce a lock-down ($do(Y=y)$)? This question cannot be answered with observational data alone. One issue in this case is that Delft has never been in a lock-down. The algorithms discussed in this thesis are concerned with this second layer of information.
+
+For completeness, we describe the third level. This level handles counterfactuals, which question the probability of some observation had the circumstances been different, denoted by $\Prb(y_x|x',y',do(Z=z),W=w)$. A typical question is "What is the chance that I would have been infected with Covid, if I had not worn a face mask in the train yesterday ($y_x$)? I know that I actually did wear the mask ($x'$) and that I am not infected ($y'$). The train went to Bovenkarspel ($W=w$) and all other people wore a mask because the government made it mandatory ($do(Z=z)$)." To answer such questions, data alone cannot be enough. For example, it is logically impossible to have infection data of people that really wore a mask, but then actually did not. 
+
+
+\subsection{Topic of the Thesis}
+
+\subsubsection{Discovering the gene regulatory network}
+
+% Applied to biological data
+In this thesis we investigate a very practical prediction task, that heavily relies on making a distinction between cause and effect. \citet{kemmeren2014large} created a dataset from experiments on yeast bacteria. Using microarray technology, they measured the expression level of over six thousand genes in this bacteria. The expression level indicates how active a gene is. Genes have effect on each other. One gene may up- or down-regulate another gene, meaning that its activity increases or decreases the activity of the other gene. We can construct a regulatory network by combining all relations between all genes. In order to understand the functioning of the yeast bacteria, we wish to gain knowledge about this network. In this thesis, we investigate a method to predict the effects of each gene.
+
+To predict if one gene affects another, it is not enough to know if they are statistically associated. If we only know that two genes $X$ and $Y$ are associated, it may be that $X$ has effect on $Y$, $Y$ has effect on $X$, some other gene has an effect on both $X$ and $Y$, or some combination is the case. This brings us to the realm of causality, which means that we need to define causal assumptions to tackle this inference task. 
+
+In fact, the dataset provides a good first assumption. 262 experiments are reported in which one gene was knocked out (made inactive), which we can interpret as an intervention. Besides using these data points as an important source of information, we also use it to evaluate the predictions.
+
+% Challenges of dataset and task
+The dataset poses three important challenges, that make it interesting for this thesis. Because the number of genes is large, complete algorithms are computationally expensive and almost infeasible. Moreover, there is very little data. Specifically, for each intervention there is only one data point, and the number of genes is larger than the total number of data points, including purely observational data. Lastly, evaluation is not trivial. In the biology literature, there is only some consensus about a couple of relations.
+
+% Philip LCD as starting point
+We take the work of \citet{versteeg2019boosting} as a starting point, since they report a state-of-the-art causal inference algorithm on this dataset (ICP), and an incomplete efficient algorithm that approaches that same performance, called Local Causal Discovery (LCD). We focus on LCD, because it is more efficient. LCD constructs an external context variable that represents background knowledge that can be used to infer causal relations. \citet{versteeg2019boosting} construct this in the most straightforward way, encoding if a data point is pure observation or whether an intervention took place. We try to make the context variable more specific.
+
+% Hypothesis, contributions
+In our analysis of the data, we observe that strong feedback loops are limited. Therefore, we could define a hierarchy among the genes in which causes precede effects. We hypothesize that this implicit causal order can be used to inform the LCD context variable. A knock-out on a gene that is earlier in the order, is more likely to affect some gene than one later in the order. 
+
+This poses a challenge of estimating this causal order in the genes. We investigated this problem extensively. Moreover, when we predict the effects of some gene, we use the knock-out data of that gene to evaluate. This means we cannot use it to infer its position in the order. We require a different estimation method to infer the position of a single gene in an existing order, and propose a straightforward method for this. The combination of these two estimation methods yields a context variable that we use for LCD in our experiment.
+
+
+\subsection{Structure of the Thesis}
+We start this thesis in Chapter \ref{chapter:background} with a description of the modeling framework, and how causal assumptions are encoded in this framework. The chapter is concluded with a concise review of causal inference methods. The dataset is described and analysed in Chapter \ref{chapter:data}.
+
+Following this, we develop the order-based LCD method. Chapter \ref{chapter:methodorder} details the experiments and analysis that determine how we estimate variable order. Order-based LCD is described in detail in Chapter \ref{chapter:methodcontext}. The method requires us to estimate the position of a test variable in the order. A short explanation and analysis is included of our position estimation method. 
+
+Chapter \ref{chapter:experiments} describes the experiment in which order-based LCD is applied to the \citet{kemmeren2014large} dataset. The implementation of our method and the baselines is also shortly discussed. The results and analysis of this experiment is described in Chapter \ref{chapter:analysis}, followed by our conclusions and a discussion in Chapter \ref{chapter:conclusion}.
+
+
+% \citet{versteeg2019boosting} show LCD as a fast causal inference method on \citet{kemmeren2014large}, with L2-boosting as a necessary preselection to approximate the performance of ICP. It improves the non-causal baseline of pure preselection in the strongest 70 predictions. 
+
+% LCD uses an exogenous context variable to infer ancestral relations. \citet{versteeg2019boosting} construct this in the most straightforward way. We try to make it more specific by informing it of the estimated order of variables. 
+
+% Contributions:
+% \begin{itemize}
+%     \item Metric for ordering, comparison of order methods on Kemmeren
+%     \item Predictions on the intervention table may be a different task with different properties of the variables
+% \end{itemize}

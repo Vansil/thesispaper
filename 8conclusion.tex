@@ -1,5 +1,6 @@
 \newpage
 \section{Conclusion and Outlook}
+\label{chapter:conclusion}
 
 % SECTION
 % Impact of results
@@ -7,9 +8,41 @@
 % Future of causality field
 
 
-\subsection{Discussion}
-\begin{itemize}
-    \item order is based for a large part on data values. Is the dependence of the order on the data confuscated enough to make the exogeneity assumption valid?
-    \item filter on intervention table, these genes were selected as knock-out for a reason, maybe its an easier task? It is definitely a different task.
-    \item predicting continuous values could be a better task
+
+% What did we do? ("limited success")
+After a decade that has shown unbelievable successes of statistical AI, purely statistical methods are reaching limits. This warrants a revaluation of symbolic AI, and sparks new interest in the interface of the two schools. Causality arises as a field with the ambitious goal to unveil cause-effect relations with a combination of deduction from datasets and induction from background knowledge. 
+
+We took a dataset of gene perturbation experiments and investigated an adaptation of LCD to discover causal relations between genes. Since we found that there was only limited feedback, we hypothesized that a causal order could inform the LCD context variable. 
+
+An extensive analysis of methods to estimate variable order from the data showed TrueSkill to be the most effective option. A straightforward method was then analysed to infer the position of a tested gene in the order. Finally, the order was used to construct a context variable for LCD, and order-based LCD was compared to baseline methods.
+
+
+% Contributions
+\subsection{Contributions}
+The main contributions of this thesis are listed below.
+
+\setlist{nolistsep}
+\begin{itemize}[noitemsep]
+    \item A metric was introduced to evaluate the task of estimating variable order.
+    \item Statistical properties of the \citet{kemmeren2014large} dataset were analysed, which can be used to inform causal discovery methods.
+    \item Order estimation methods were thoroughly analysed on the \citet{kemmeren2014large} dataset.
+    \item An order-based LCD method was introduced and shown to use information that is not used by the non-causal regression-based baseline
 \end{itemize}
+
+
+% Suggestions for Future Work
+\subsection{Suggestions for Future Work}
+The results of this thesis show the potential of using variable order for causal discovery. This opens up some interesting directions for further research.
+
+\setlist{nolistsep}
+\begin{itemize}
+    \item The estimate of variable order is derived from the data, and used to construct context variables. This raises the question to what extent the exogeneity assumption is threatened. Given a certain method of order inference, what functional forms of the context variable are allowed?
+    \item Experiments on a wide variety of generated datasets would provide useful insights about the properties of order-based LCD. For example, does it work better on sparse SCMs? How harmful are cycles?
+    \item Generalizations to datasets with more datapoints per intervention, or to other inference methods like ICP would be very interesting. 
+\end{itemize}
+
+
+
+% \item order is based for a large part on data values. Is the dependence of the order on the data confuscated enough to make the exogeneity assumption valid? Theoretical analysis of the allowed functional dependence of discrete exogenous variables on data.
+% \item filter on intervention table, these genes were selected as knock-out for a reason, maybe its an easier task? It is definitely a different task.
+% \item predicting continuous values could be a better task

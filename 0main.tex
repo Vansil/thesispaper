@@ -24,6 +24,9 @@
 % Custom commands
 \newcommand{\silvan}[1]{\textcolor{blue}{[#1]}}
 
+% References as hyperlinks
+\usepackage[colorlinks,linktocpage=true,linkcolor=blue,citecolor=blue,urlcolor=blue,bookmarks=false,hypertexnames=true]{hyperref}
+
 % Math
 \usepackage{amssymb}
 \usepackage{mathtools}
@@ -89,7 +92,7 @@
 \newpage
 \tableofcontents
 
-\input{01notation}
+% \input{01notation}
 
 \input{1introduction}
 % 4 pages
@@ -115,12 +118,12 @@
 \input{8conclusion}
 % 2 pages
 
+\appendix
+
+\newpage
+\section{Appendixje}
+
 \newpage
 \bibliography{references}
-
-% \appendix
-
-% \newpage
-% \section*{Appendix A}
 
 \end{document}
