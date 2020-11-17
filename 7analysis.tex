@@ -14,6 +14,99 @@
 % Selecting only compliant relations: there's just very few left, they happen to be wrong?
 
 
+\subsubsection{ROC compared to other methods}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7roc_general.pdf}
+    \caption{}
+    \label{fig:7:rocgen}
+\end{figure}
+
+
+
+\subsubsection{ROC compared to LCD methods}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7roc_lcd.pdf}
+    \caption{}
+    \label{fig:7:roclcd}
+\end{figure}
+
+
+
+\subsubsection{Accumulated regression deviation}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7contin_example.pdf}
+    \caption{}
+    \label{fig:7:contex}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7contin_general.pdf}
+    \caption{}
+    \label{fig:7:congen}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7contin_lcd.pdf}
+    \caption{}
+    \label{fig:7:conlcd}
+\end{figure}
+
+
+
+\subsubsection{Specific examples comparing order-LCD to LCD}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7inclusive.pdf}
+    \caption{}
+    \label{fig:7:exincl}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7exclusive.pdf}
+    \caption{}
+    \label{fig:7:exexcl}
+\end{figure}
+
+
+\subsubsection{The general similarity of order-LCD and LCD}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.3\textwidth]{7score_vs.pdf}
+    \caption{}
+    \label{fig:7:scorevs}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7context_hist.pdf}
+    \caption{}
+    \label{fig:7:contexthist}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7exclusive_totals.pdf}
+    \caption{}
+    \label{fig:7:excltotals}
+\end{figure}
+
+
+
+
+
+\subsubsection{Old stuff}
+
 % ROCs
 We evaluate the methods using receiver operating characteristic (ROC) curves. The methods assign a score to every causal relation. The ROC curves plot how the number of true positives and false positives change for different thresholds on this score. Each method only assigns a score to some relations. If we require predictions beyond this point, we can only guess randomly. 
 
@@ -23,12 +116,12 @@ ROC curves show the number of true positives on the x-axis versus false positive
 
 We first recapitulate the main findings of \citet{versteeg2019boosting} about the baseline methods. Then we compare order-based LCD to them. Finally we discuss the effect of preselection to our method.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{ROC_filter_threshold_absgt_scorespred_short.pdf}
-    \caption{Partial ROC curve using the absolute ground-truth with aggregation of continuous scores.}
-    \label{fig:7:rocshort}
-\end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\textwidth]{ROC_filter_threshold_absgt_scorespred_short.pdf}
+%     \caption{Partial ROC curve using the absolute ground-truth with aggregation of continuous scores.}
+%     \label{fig:7:rocshort}
+% \end{figure}
 
 \subsubsection{Baselines}
 

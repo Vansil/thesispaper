@@ -7,6 +7,7 @@
 % Next steps in this direction
 % Future of causality field
 
+% IMPORTANT: it was a very hard problem, high dimensionality and little data, no true labels, complex system
 
 
 % What did we do? ("limited success")
@@ -40,6 +41,14 @@ The results of this thesis show the potential of using variable order for causal
     \item Experiments on a wide variety of generated datasets would provide useful insights about the properties of order-based LCD. For example, does it work better on sparse SCMs? How harmful are cycles?
     \item Generalizations to datasets with more datapoints per intervention, or to other inference methods like ICP would be very interesting. 
 \end{itemize}
+
+Brainstorm:
+- Throw out more interventions to make it more distinct from original LCD
+- Define a new task to predict the deviation, e.g. select C=1 from interventions such that linear regression on C=1 yields a good estimate (are we allowed to evaluate like this, or are we using the train data?)
+- Look further into order inference: use the continuous scores (e.g. TrueSkill adaptation), infer partial orders more in line with the underlying data, ...
+- Improve position inference: maybe find order and position jointly (find an order specific to each cause gene? Select genes likely to be ancestor in other way)
+- Test further: Apply order-based context to ICP (or other context-based methods); apply to different datasets with different properties
+- Broaden scope: Investigate how to incorporate the knowledge of intervention target in a more fine-grained manner
 
 
 
