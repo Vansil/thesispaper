@@ -20,7 +20,9 @@ LCD is chosen as the causal inference method in this thesis because it is simple
 
 The algorithm tests a causal relation $X\to Y$ between two endogenous variables, using a third exogenous variable $C$ (the context). A small set of statistical independence tests restricts the set of possible causal subgraphs with nodes $X$, $Y$ and $C$. Under some circumstances, it allowes us to infer  that $X$ is an ancestor of $Y$.
 
-LCD relies on some assumptions. Like many inference algorithms, the starting point is to model the underlying system as a SCM. The context variable needs to be exogenous, such that no system variable can be its cause. Causal faithfulness is assumed to link (in)dependences to the d-separation of variables. To measure these (in)dependences from the data, the dependence and independence tests are taken as oracles, such that their outcomes are taken as the truth. Unbiased data selection and acyclicity are also assumed. The acyclicity could be relaxed, as in a more recent formulation of LCD by \citet{mooij2016joint}. However, the development of the LCD method is not the focus of this thesis.
+LCD relies on some assumptions. Like many inference algorithms, the starting point is to model the underlying system as a SCM. The context variable needs to be exogenous, such that no system variable can be its cause. Causal faithfulness is assumed to link (in)dependences to the d-separation of variables. To measure these (in)dependences from the data, the dependence and independence tests are taken as oracles, such that their outcomes are taken as the truth. Unbiased data selection and acyclicity are also assumed. 
+
+\citet{mooij2016joint} show that the acyclicity assumption can be dropped if we adopt a different notion of separation called $\sigma$-separation. We will leave this topic at this note, because the theoretical properties of the LCD method are not the focus of this thesis.
 
 \subsubsection{Statistical tests}
 
@@ -38,29 +40,29 @@ All subgraphs satisfy one independence and five dependence relations:
 % \setlist{nolistsep}
 \begin{enumerate}[noitemsep]
     \item $C \CI Y \given X $
-    \item $C \nCI X$
-    \item $X \nCI Y$
-    \item $C \nCI Y$ (follows from 2 and 3)
-    \item $X \nCI Y \given C$ (follows from 1 and 3)
-    \item $C \nCI X \given Y$ (follows from 1 and 2)
+    \item $C \nCI Y$
+    \item $C \nCI X$ (optional)
+    \item $X \nCI Y$ (optional)
+    \item $X \nCI Y \given C$ (optional)
+    \item $C \nCI X \given Y$ (optional)
 \end{enumerate}
 
-The last three relations can be inferred from the first three, using the causal faithfulness assumption and the Markov property. \citet{cooper1997simple} proved that the first three relations are sufficient to infer the causal relation $X\to Y$, by enlisting all possible subgraphs. 
+\citet{cooper1997simple} proved that relations 1, 3, and 4 are sufficient to infer the causal relation $X\to Y$, by enlisting all possible subgraphs. \citet{versteeg2019boosting} only used relations 1 and 2, which are also sufficient.
 
-Most LCD implementations only check the first three relations. However, if assumptions are violated or the dataset is small, some nonexistent causal relations might be inferred. One can sacrifice recall for precision by testing some or all of the last three relations. \citet{cooper1997simple} warns specifically that the independence relation ($C \CI Y \given X$) is vulnerable to faithfulness violations, and suggests testing the fourth relation ($C \nCI Y$) as well. \citet{triantafillou2017predicting} aim for high precision and test all six relations.
+Most LCD implementations only check two or three relations. However, if assumptions are violated or the dataset is small, some nonexistent causal relations might be inferred. One can sacrifice recall for precision by testing some or all of the remaining relations. \citet{cooper1997simple} warns specifically that the independence relation ($C \CI Y \given X$) is vulnerable to faithfulness violations, and suggests testing the second relation ($C \nCI Y$) as well. \citet{triantafillou2017predicting} aim for high precision and test all six relations.
 
 A common choice of independence test is the two-tailed Fisher z-test \citep{fisher1924distribution}, which tests if the partial correlation is zero. In the application of this thesis, this test may be limited, since the context variable is constructed to have only two discrete values. As an intuitive example, we test the relation $C\nCI X$. The mean of $X$ given $C=0$ happens to be close to the mean given $C=1$. This makes it very hard to significantly show a correlation between $C$ and $X$. 
 
 As a potentially better alternative, we use the mean-variance test that is used by \citet{versteeg2019boosting}, testing both the means and the variances across context values. The example given above would not fool this test, because there is a difference in variance. Regardless of this intuition, it should be noted that \citet{versteeg2019boosting} show hardly any difference in results due to the test.
 
-In this thesis we will further follow the work of \citet{versteeg2019boosting} by choosing the significance level at $\alpha=0.01$. When the test rejects the null hypothesis, we conclude (conditional) dependence between the variables. Reversely, when the test fails to reject the null hypothesis, we conclude (conditional) independence. We accept this dubious method, because it is simple and common in the causality field. Although we could choose a different significance level for the dependence and independence tests, we again follow \citet{versteeg2019boosting} and use the same values $\alpha$.
+When the test rejects the null hypothesis, we conclude (conditional) dependence between the variables. Reversely, when the test fails to reject the null hypothesis, we conclude (conditional) independence. We accept this dubious method, because it is simple and common in the causality field. We further follow the work of \citet{versteeg2019boosting} by choosing a different significance level for testing the dependence (2) and conditional independence (1) relation. The conditional independence test is made more strict by correcting for multiple testing, with an $\alpha_{indep}=\frac{0.01}{6182}$. It is not as straightforward to correct the test for the dependence relation, since we draw a conclusion when we fail to reject the hypothesis. Therefore, the significance level is kept at $\alpha_{dep}=0.01$.
 
 
 \subsection{Context Design}
 
 The \citet{kemmeren2014large} dataset does not provide clear context variables that are known to be exogenous. Therefore, the modeler can determine how to construct a context variable. Any context that is not informed by the values of the data is allowed, but some designs may be more productive than others. Recall that LCD is sound but not complete. A bad choice of context could result in a low recall. 
 
-We can look at context design from the perspective of the three sufficient LCD conditions. $X\nCI Y$ says that LCD only considers relations where dependence between $X$ and $Y$ is shown. This condition is irrelevant for context design. $C\nCI X$ means that we should choose the context such that it is expected to depend on $X$. In the case of a single binary context variable, we want the distribution of $X$ to be different depending on the value of $C$. Lastly, $C\nCI Y|X$ tells us that any dependence between the context and our potential target $Y$ should disappear once we know the value of $X$. 
+We can look at context design from the perspective of three sufficient LCD conditions. $X\nCI Y$ says that LCD only considers relations where dependence between $X$ and $Y$ is shown. This condition is irrelevant for context design. $C\nCI X$ means that we should choose the context such that it is expected to depend on $X$. In the case of a single binary context variable, we want the distribution of $X$ to be different depending on the value of $C$. Lastly, $C\nCI Y|X$ tells us that any dependence between the context and our potential target $Y$ should disappear once we know the value of $X$. 
 
 Any background knowledge about the data can be used for the context. However, the sparsity of the data makes this task complicated. We would like to encode the target gene of interventions in a categorical context variable. However, there would only be one data point per context value, rendering independence testing impossible. The challenge is to generalize this information.
 
@@ -68,21 +70,21 @@ Any background knowledge about the data can be used for the context. However, th
 
 The context used by \citet{versteeg2019boosting} is the ultimate generalization of the intervention target information. They introduce a single binary context variable that encodes if the data point is interventional or observational. 
 
-Generally, when a gene is knocked out in the system, the full distribution of all variables is affected. However, the effect of single interventions is typically restricted to a small number of genes that are significantly affected. When we are interested in the effects of some variable $X$, there may be some intervention data points where $X$ deviates from its normal value due to intervention on itself or its ancestors. However, the significance of these datapoints may be obfuscated by the large number of intervention data points where $X$ has a normal value. The clusters for $C=0$ and $C=1$ could be hardly distinguishable. 
+Generally, when a gene is knocked out in the system, a different SCM is induced with a different distribution of the variables values. However, the effect of single interventions is typically restricted to a small number of genes that are significantly affected. When we are interested in the effects of some variable $X$, there may be some intervention data points where $X$ deviates from its normal value due to intervention on itself or its ancestors. However, the significance of these data points may be obfuscated by the large number of intervention data points where $X$ has a normal value. The clusters for $C=0$ and $C=1$ could be hardly distinguishable. 
 
-Moreover, the effectiveness of this context variable is questionable. Take the example in Figure \ref{fig:5:origlcd} of a Markov chain with variables $X_i$. Let's introduce binary intervention variables $I_i$ that equal $1$ if there is an intervention on $X_i$. We could describe the causal mechanism as $X_i = f(X_{i-1}, I_i)$. The context is then a function of all $I_i$. Specifically, $C=\bigcup I_i$ if we consider the values to be boolean. When we represent this graphically, we see that $C$ can act as a confounder between any variable pair. Although the exogeneity assumption is still satisfied, this confounding breaks the LCD condition $C\CI Y|X$. Concretely, when we try to prove the true relation $X_i\to X_j, i<j$, any datapoint with an intervention on $X_k, i<k\leq j$ disproves the conditional independence. This insight can be generalized to any acyclic graph with ordered nodes $X_i$. 
+% Moreover, the effectiveness of this context variable is questionable. Take the example in Figure \ref{fig:5:origlcd} of a Markov chain with variables $X_i$. Let's introduce binary intervention variables $I_i$ that equal $1$ if there is an intervention on $X_i$. We could describe the causal mechanism as $X_i = f(X_{i-1}, I_i)$. The context is then a function of all $I_i$. Specifically, $C=\bigcup I_i$ if we consider the values to be boolean. When we represent this graphically, we see that $C$ can act as a confounder between any variable pair. Although the exogeneity assumption is still satisfied, this confounding breaks the LCD condition $C\CI Y|X$. Concretely, when we try to prove the true relation $X_i\to X_j, i<j$, any data point with an intervention on $X_k, i<k\leq j$ disproves the conditional independence. This insight can be generalized to any acyclic graph with ordered nodes $X_i$. 
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{5origlcd_marginal.pdf}
-    \caption{Graphical representation of the LCD context as constructed by \citet{versteeg2019boosting} applied to a Markov chain, and its marginalization over the three relevant variables.}
-    \label{fig:5:origlcd}
-\end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\textwidth]{5origlcd_marginal.pdf}
+%     \caption{Graphical representation of the LCD context as constructed by \citet{versteeg2019boosting} applied to a Markov chain, and its marginalization over the three relevant variables.}
+%     \label{fig:5:origlcd}
+% \end{figure}
  
 
 \subsubsection{Order-based Context Design}
 
-We hypothesize that a more specific context is more effective. Given a variable pair $X,Y$, the original context makes a distinction whether there is an intervention anywhere in the system. Most of these interventions don't even affect $X$ or $Y$. We would like a context that makes a distinction between an environment with an intervention that affects $X$, and an envirenonment without such intervention. 
+We hypothesize that a more specific context is more effective. Given a variable pair $(X,Y)$, the original context makes a distinction whether there is an intervention anywhere in the system. Most of these interventions don't even affect $X$ or $Y$. We would like a context that makes a distinction between an environment with an intervention that affects $X$, and an environment without such intervention. 
 
 To construct a context based on this idea, we require two adaptations. First, for each variable $X$ we have a separate context variable $C_X$ that we use to test the relation $X\to Y$. Second, we need to estimate whether a given intervention is expected to affect $X$. 
 
