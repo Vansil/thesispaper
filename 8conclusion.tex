@@ -18,6 +18,10 @@ We took a dataset of gene perturbation experiments and investigated an adaptatio
 
 An extensive analysis of methods to estimate variable order from the data showed TrueSkill to be the most effective option. A straightforward method was then analysed to infer the position of a tested gene in the order. Finally, the order was used to construct a context variable for LCD, and order-based LCD was compared to baseline methods.
 
+Several factors make the causal inference problem on this dataset complicated. The data is high-dimensional and very sparse. True labels are not available, so we need to construct some data-based ground-truth to do quantitative evaluation. The underlying biological system is complex. Only gene expressions are measured whereas the processes in the cell involve many other relevant variables, and there is quite some variation in the samples. 
+
+Consequently, out of thousands of true ancestral relations in the data, state-of-the-art methods can only be trusted in their top 20 predictions. Unfortunately, in this thesis we were unable to improve on this. Nevertheless, progress was made to develop causal inference methods based on an implicit order in variables, to analyse properties of these methods and justify parameter values, and to thoroughly analyse performance on prediction tasks.
+
 
 % Contributions
 \subsection{Contributions}
@@ -25,34 +29,60 @@ The main contributions of this thesis are listed below.
 
 \setlist{nolistsep}
 \begin{itemize}[noitemsep]
-    \item A metric was introduced to evaluate the task of estimating variable order.
     \item Statistical properties of the \citet{kemmeren2014large} dataset were analysed, which can be used to inform causal discovery methods.
-    \item Order estimation methods were thoroughly analysed on the \citet{kemmeren2014large} dataset.
-    \item An order-based LCD method was introduced and shown to use information that is not used by the non-causal regression-based baseline
+    \item A continuous metric was introduced to evaluate the task of estimating variable order in datasets with single sample interventions.
+    \item Order estimation methods were thoroughly analysed on the \citet{kemmeren2014large} dataset, methods based on the binary ground-truth were found to be most effective.
+    \item A new order-based LCD method was carefully designed and analysed. 
+    \item Failure to show significant improvement inspired new ways to analyse and compare inference methods in detail. These evaluation methods and graphs can be used to develop and investigate novel methods in the future. 
 \end{itemize}
 
 
 % Suggestions for Future Work
 \subsection{Suggestions for Future Work}
-The results of this thesis show the potential of using variable order for causal discovery. This opens up some interesting directions for further research.
+% The results of this thesis show the potential of using variable order for causal discovery. This opens up some interesting directions for further research.
+
+The insights of this thesis spark many new questions, that can be the basis of future research.
 
 \setlist{nolistsep}
 \begin{itemize}
-    \item The estimate of variable order is derived from the data, and used to construct context variables. This raises the question to what extent the exogeneity assumption is threatened. Given a certain method of order inference, what functional forms of the context variable are allowed?
-    \item Experiments on a wide variety of generated datasets would provide useful insights about the properties of order-based LCD. For example, does it work better on sparse SCMs? How harmful are cycles?
-    \item Generalizations to datasets with more datapoints per intervention, or to other inference methods like ICP would be very interesting. 
+    \item \textbf{Further testing} of the order-based LCD method and easy extensions may show more promising results than we have in this thesis. The method can be generalized for datasets with more samples per intervention target. It may show different behavior compared to the original LCD when the task is easier. An experiment can also be done with ICP and the order-based context.
+    \item An important step in further investigation of the hypothesis of this thesis, is to test the method on \textbf{simulated} data. If we fail to artificially construct a dataset on which the method works well, we should not expect it to work well on real-world datasets.
+    \item There are enough parts of the order-based LCD algorithm that may be improved by \textbf{gradual development} of the method. The first thing to try is to infer more spread out gene positions, making the method more distinct from the original LCD.
+    \item More \textbf{radical changes} of parts of the method are also interesting. We did not succeed to use the continuous data effectively to infer an order for example. Moreover, position inference is probably a weak link in the algorithm right now and may benefit from some more research. Perhaps order and gene positions can be inferred jointly as well.
+    \item A \textbf{broader scope} may inspire interesting related methods. Perhaps we can infer a general partial order of variables, or infer specifically per cause variable a set of potential ancestors. It remains a big question to what extend we can make use of our knowledge of the intervention targets. Original LCD does not use this information at all, and order-based LCD only uses it coarsely. 
+    \item Lastly, we may investigate some \textbf{theoretical} properties of different context variables. Currently we assume that the context variable is exogenous to the system. However, in an indirect way we base it on the data itself. The order and gene positions are directly inferred from the data. What functional relations between the data and the context are allowed? What implicit assumptions do we make?
 \end{itemize}
 
-Brainstorm:
-- Throw out more interventions to make it more distinct from original LCD
-- Define a new task to predict the deviation, e.g. select C=1 from interventions such that linear regression on C=1 yields a good estimate (are we allowed to evaluate like this, or are we using the train data?)
-- Look further into order inference: use the continuous scores (e.g. TrueSkill adaptation), infer partial orders more in line with the underlying data, ...
-- Improve position inference: maybe find order and position jointly (find an order specific to each cause gene? Select genes likely to be ancestor in other way)
-- Test further: Apply order-based context to ICP (or other context-based methods); apply to different datasets with different properties
-- Broaden scope: Investigate how to incorporate the knowledge of intervention target in a more fine-grained manner
-- Experiment with different (more fine-grained?) ways to construct a context. Drop the order, keep the same intuition and directly remove the X-center of the intervention data.
+% - Theoretical
+% x Simulation
+% x Further testing and extending (ICP, easier datasets)
+% x Gradual improvements
+% x Continuous order inference, joint order and position inference
+% x Broaden scope: using knowledge of int target (e.g. partial orders)
+
+
+
+% \setlist{nolistsep}
+% \begin{itemize}
+%     \item (Theoretical) The estimate of variable order is derived from the data, and used to construct context variables. This raises the question to what extent the exogeneity assumption is threatened. Given a certain method of order inference, what functional forms of the context variable are allowed?
+%     \item (Simulation) Experiments on a wide variety of generated datasets would provide useful insights about the properties of order-based LCD. For example, does it work better on sparse SCMs? How harmful are cycles?
+%     \item Generalizations to datasets with more datapoints per intervention, or to other inference methods like ICP would be very interesting. 
+% \end{itemize}
+
+% Brainstorm:
+% - (Continue gradual development) Throw out more interventions to make it more distinct from original LCD
+% - Define a new task to predict the deviation, e.g. select C=1 from interventions such that linear regression on C=1 yields a good estimate (are we allowed to evaluate like this, or are we using the train data?)
+% - Look further into order inference: use the continuous scores (e.g. TrueSkill adaptation), infer partial orders more in line with the underlying data, ...
+% - Improve position inference: maybe find order and position jointly (find an order specific to each cause gene? Select genes likely to be ancestor in other way) (may be weak link now)
+% - Test further: Apply order-based context to ICP (or other context-based methods); apply to different datasets with different properties
+% - Broaden scope: Investigate how to incorporate the knowledge of intervention target in a more fine-grained manner
+% - Experiment with different (more fine-grained?) ways to construct a context. Drop the order, keep the same intuition and directly remove the X-center of the intervention data. (KAN DIT?)
+
+% partial order?
+
+% New hypothesis: ???
 
 
 % \item order is based for a large part on data values. Is the dependence of the order on the data confuscated enough to make the exogeneity assumption valid? Theoretical analysis of the allowed functional dependence of discrete exogenous variables on data.
-% \item filter on intervention table, these genes were selected as knock-out for a reason, maybe its an easier task? It is definitely a different task.
-% \item predicting continuous values could be a better task
+% X \item filter on intervention table, these genes were selected as knock-out for a reason, maybe its an easier task? It is definitely a different task.
+% \item predicting continuous values could be a better task / further investigated
