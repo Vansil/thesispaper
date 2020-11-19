@@ -13,10 +13,11 @@
 
 % Selecting only compliant relations: there's just very few left, they happen to be wrong?
 
-
-\subsubsection{ROC compared to other methods}
+\subsection{Receiver Operating Characteristic Curves}
 
 We first analyse the performance of order-based LCD on the \citet{kemmeren2014large} dataset using the receiver operating characteristic (ROC) curve. This graph shows the number of true positives versus false positives of a binary classifier as a prediction threshold is varied. Good methods rise quickly and make many good predictions before starting to make mistakes. Specifically, we fix a binary ground-truth that defines the true ancestral relations between genes. The aggregated scores resulting from the bootstrapped experiment are thresholded to select predictions that are tested to the ground-truth.
+
+\subsubsection{Compared to Other Methods}
 
 In the top row of Figure \ref{fig:7:rocgen} we show the ROC curves of order-based LCD, ICP which is considered the best method on this data, the L$_2$-boosting baseline and a random baseline. We computed the curves for the $10\%$, $1\%$, and $0.1\%$ strongest relations according to the absolute score. The discrete predictions of the methods are used. The ROCs of other combinations of these settings, including standardized scores and continuous predictions, can be found in Appendix \silvan{APPENDIX}. The conclusions hold for all settings.
 
@@ -38,7 +39,7 @@ We may expect that order-based LCD behaves differently on this subset of ancestr
 The \textit{order-compliant relations} ROC curve contains only those relations that are explicitly not in violation of the order inferred by order-LCD. This small subset of ancestral relations may be used to test whether order-LCD performs relatively well on those relations that are most in line with our hypothesis. Do the genes comply to some implicit order, and can this be used to inform the context variable of LCD? Unfortunately, very little predictions in this subset are made by order-based LCD or ICP. It may be that this small subset of relations happen to be harder to prove, or that order-based LCD fails to show the relations that it was designed for. The fact that the L$_2$-boosting baseline performs about as good, or worse than the random baseline on this subset supports the first explanation.
 
 
-\subsubsection{ROC compared to other LCD methods}
+\subsubsection{Compared to LCD Methods}
 
 Figure \ref{fig:7:roclcd} shows ROC curves of all methods related to LCD. The most important result is that the ROC curves of the original LCD and our order-based LCD are very similar. This means that we failed in our attempt to improve on the original LCD by informing the context with some gene ordering. We analyse the small difference between these two methods in the end of this section.
 
@@ -51,7 +52,7 @@ Figure \ref{fig:7:roclcd} also shows the results of an ablation study. We random
     \label{fig:7:roclcd}
 \end{figure}
 
-\subsubsection{Accumulated regression deviation}
+\subsection{Accumulated Regression Deviation}
 
 We provide another approach to evaluate the performance of the algorithms to show that our conclusions extend beyond binary ground-truths and ROC curves. When some method predicts an ancestral relation, we use the data in the train split to predict a precise expression value of the knock-out. Figure \ref{fig:7:contex} shows how this is computed. Using the joint data or only the intervention data, we apply linear regression and use it to predict a deviation at the knock-out value of the cause gene. Note that we are cheating a little here, since this knock-out value is not in the train split. If the results of this approach were great, we could redefine the metric to see if the results are robust. For example, we could assume a standard knock-out value of about $-2.5$.
 
@@ -89,8 +90,9 @@ A last remark is that linear regression is related to the independence tests tha
 % Generalize to continuous score settings?
 
 
+\subsection{Comparison of Order-Based LCD with Original LCD}
 
-\subsubsection{Specific examples comparing order-LCD to LCD}
+\subsubsection{Specific examples}
 
 
 \begin{figure}[p]
@@ -112,7 +114,7 @@ We investigate qualitatively how the predictions of order-based LCD are related 
 More interesting are the strongest order-based LCD predictions that are not at all predicted by LCD. The top six is shown in Figure \ref{fig:7:exexcl}, and the top 25 in Appendix \silvan{APPENDIX}. We would hope that the methods behave differently, and that order-based LCD improves over LCD by making some entirely new, confident predictions. This is not what we see. The strongest exclusive prediction has merely a score of $6/100$. Interestingly, these relations assign many intervention points the context value $0$, and are in that way able to make predictions where the original LCD cannot. Unfortunately, most of these exclusive relations are also wrong, even according to the weak $10\%$ binary ground-truth. 
 
 
-\subsubsection{The general similarity of order-based LCD and LCD}
+\subsubsection{General Similarity}
 
 Finally, we take a more general approach in the comparison of order-based LCD and the original LCD, and try to explain why we failed to show a clear difference between the methods. 
 
