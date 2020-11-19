@@ -22,8 +22,8 @@ In the top row of Figure \ref{fig:7:rocgen} we show the ROC curves of order-base
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{7roc_general.pdf}
-    \caption{}
+    \includegraphics[width=\textwidth]{7roc_general.jpg}
+    \caption{ROC curves of order-based LCD compared to other methods. Columns use different ground-truth thresholds, rows different subsets of the relations that are evaluated. A dashed line indicates that a method resorts to random guessing.}
     \label{fig:7:rocgen}
 \end{figure}
 
@@ -40,16 +40,16 @@ The \textit{order-compliant relations} ROC curve contains only those relations t
 
 \subsubsection{ROC compared to other LCD methods}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{7roc_lcd.pdf}
-    \caption{}
-    \label{fig:7:roclcd}
-\end{figure}
-
 Figure \ref{fig:7:roclcd} shows ROC curves of all methods related to LCD. The most important result is that the ROC curves of the original LCD and our order-based LCD are very similar. This means that we failed in our attempt to improve on the original LCD by informing the context with some gene ordering. We analyse the small difference between these two methods in the end of this section.
 
 Figure \ref{fig:7:roclcd} also shows the results of an ablation study. We randomized the inferred order, the inferred gene positions, and both together, to investigate to what extend these additions to the original LCD contribute to the performance of order-based LCD. Although order-based LCD is not beaten by its randomized versions in the strongest predictions, the difference is never more than a few true positives. We have to conclude that we failed to show a significant effect of our order inference and our position inference. This may show that the approach is not effective on this dataset, or that order inference or position inference should be implemented differently to benefit LCD. Since position inference was not as extensively developed in this thesis, the problem may lie there.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7roc_lcd.jpg}
+    \caption{ROC curves of order-based LCD compared to other LCD methods. Columns use different ground-truth thresholds. A dashed line indicates that a method resorts to random guessing.}
+    \label{fig:7:roclcd}
+\end{figure}
 
 \subsubsection{Accumulated regression deviation}
 
@@ -58,8 +58,22 @@ We provide another approach to evaluate the performance of the algorithms to sho
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{7contin_example.pdf}
-    \caption{}
+    \caption{Visualization of regression deviation. Linear regression is applied to the joint or intervention train data. The deviation is the vertical distance between the regression line and the red knock-out cross.}
     \label{fig:7:contex}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth]{7contin_general.pdf}
+    \caption{Accumulated regression deviation of order-based LCD compared to other methods. Columns use different data to regress on, rows a different norm to add the accumulated deviations.}
+    \label{fig:7:congen}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth]{7contin_lcd.pdf}
+    \caption{Accumulated regression deviation of order-based LCD compared to other LCD methods. Columns use different data to regress on, rows a different norm to add the accumulated deviations.}
+    \label{fig:7:conlcd}
 \end{figure}
 
 To compare the performance of the most confident predictions of different algorithms, we create accumulated regression deviation graphs. These accumulate the deviations of the top predictions using the $l_1$-norm or $l_2$-norm.\footnote{The $l_1$-norm is the sum of absolute values, the $l_2$-norm is the sum of squared values.} Better methods have graphs with low accumulated deviation for the top predictions.
@@ -74,75 +88,62 @@ A last remark is that linear regression is related to the independence tests tha
 
 % Generalize to continuous score settings?
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{7contin_general.pdf}
-    \caption{}
-    \label{fig:7:congen}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{7contin_lcd.pdf}
-    \caption{}
-    \label{fig:7:conlcd}
-\end{figure}
-
 
 
 \subsubsection{Specific examples comparing order-LCD to LCD}
 
-We investigate qualitatively how the predictions of order-based LCD are related to those of the original LCD. Figure \ref{fig:7:exincl} shows the six strongest predictions of order-based LCD that are also predicted by LCD, the top 25 can be found in Appendix \silvan{APPENDIX}. It can be observed that these relations are also strongly predicted by LCD, and most are correct. The only relation that is wrongly predicted by both methods obtains a higher score from the original LCD, which gives some hope for the order-based method. All relations have relatively little intervention data that obtains context value $0$, which means that both methods are very similar. In one case, none of the interventions obtain this context value and the methods are effectively identical. 
 
-\begin{figure}[h]
+\begin{figure}[p]
     \centering
     \includegraphics[width=\textwidth]{7inclusive.pdf}
-    \caption{}
+    \caption{The six strongest predictions by order-based LCD that are also predicted by LCD. The precise scores are shown above the figures. The background color indicates whether the relation is true according to the $10\%$ threshold.}
     \label{fig:7:exincl}
 \end{figure}
 
-More interesting are the strongest order-based LCD predictions that are not at all predicted by LCD. The top six is shown in Figure \ref{fig:7:exexcl}, and the top 25 in Appendix \silvan{APPENDIX}. We would hope that the methods behave differently, and that order-based LCD improves over LCD by making some entirely new, confident predictions. This is not what we see. The strongest exclusive prediction has merely a score of $6/100$. Interestingly, these relations assign many intervention points the context value $0$, and are in that way able to make predictions where the original LCD cannot. Unfortunately, most of these exclusive relations are also wrong, even according to the weak $10\%$ binary ground-truth. 
-
-\begin{figure}[h]
+\begin{figure}[p]
     \centering
     \includegraphics[width=\textwidth]{7exclusive.pdf}
-    \caption{}
+    \caption{The six strongest predictions by order-based LCD that are not predicted by LCD. The precise scores are shown above the figures. The background color indicates whether the relation is true according to the $10\%$ threshold.}
     \label{fig:7:exexcl}
 \end{figure}
+
+We investigate qualitatively how the predictions of order-based LCD are related to those of the original LCD. Figure \ref{fig:7:exincl} shows the six strongest predictions of order-based LCD that are also predicted by LCD, the top 25 can be found in Appendix \silvan{APPENDIX}. It can be observed that these relations are also strongly predicted by LCD, and most are correct. The only relation that is wrongly predicted by both methods obtains a higher score from the original LCD, which gives some hope for the order-based method. All relations have relatively little intervention data that obtains context value $0$, which means that both methods are very similar. In one case, none of the interventions obtain this context value and the methods are effectively identical. 
+
+More interesting are the strongest order-based LCD predictions that are not at all predicted by LCD. The top six is shown in Figure \ref{fig:7:exexcl}, and the top 25 in Appendix \silvan{APPENDIX}. We would hope that the methods behave differently, and that order-based LCD improves over LCD by making some entirely new, confident predictions. This is not what we see. The strongest exclusive prediction has merely a score of $6/100$. Interestingly, these relations assign many intervention points the context value $0$, and are in that way able to make predictions where the original LCD cannot. Unfortunately, most of these exclusive relations are also wrong, even according to the weak $10\%$ binary ground-truth. 
 
 
 \subsubsection{The general similarity of order-based LCD and LCD}
 
 Finally, we take a more general approach in the comparison of order-based LCD and the original LCD, and try to explain why we failed to show a clear difference between the methods. 
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{7exclusive_totals.pdf}
-    \caption{}
-    \label{fig:7:excltotals}
-\end{figure}
-
 Figure \ref{fig:7:excltotals} shows that the distribution of prediction scores assigned by order-based LCD and the original LCD are very similar. Furthermore, only low scores are assigned to exclusive relations, that are predicted by one method but not by the other. 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=.3\textwidth]{7score_vs.pdf}
-    \caption{}
-    \label{fig:7:scorevs}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{7context_hist.pdf}
-    \caption{}
-    \label{fig:7:contexthist}
+    \includegraphics[width=\textwidth]{7exclusive_totals.pdf}
+    \caption{Comparing the distribution of discrete prediction scores of order-based LCD and the original LCD. Left: distribution of scores of both methods. Middle: distribution of order-based LCD, and distribution of the scores assigned to relations not predicted by LCD. Right: same, but comparing LCD to order-based LCD.}
+    \label{fig:7:excltotals}
 \end{figure}
 
 Figure \ref{fig:7:scorevs} further shows that when we sort predictions from strong to weak, both methods end up with a very similar order. The strongest relations of order-based LCD are also the strongest ones of LCD. Weak relations of order-based LCD are also weak according to LCD. 
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.3\textwidth]{7score_vs.pdf}
+    \caption{Comparing how predictions of order-based LCD and the original LCD are related, going from strongest to weakest predictions. A prediction level contains relations that are assigned the same score, and can therefore not be ordered among themselves.}
+    \label{fig:7:scorevs}
+\end{figure}
+
 Since we showed in many ways that both methods are very similar. We expect that this is the case because the position inference algorithm is chosen to be too conservative. In Chapter \ref{chapter:methodcontext} we chose a middle way between the desirable properties of a very spread out distribution of inferred gene positions, and inferred positions that hardly precede the actual position according to the order inference algorithm. The chosen middle way still resulted in most positions to be pushed to the end of the order, therefore keeping most of the context values $1$. Note that pushing a position all the way to the back means that all context is one, rendering the method identical to the original LCD. Simply put, if we spread out the positions more, then the method becomes more different from the original LCD. 
 
 Figure \ref{fig:7:contexthist} shows the distribution of the cause variable expressions in the data, for the five causes in the strongest predictions of order-based LCD. The expressions are separated in three clusters, corresponding to the data source (observation or intervention) and the assigned context value. Ideally, in the cluster with context value $1$, we collect those interventions that are affected by the cause variable. In this thesis we attempt to estimate this with an order in the genes. In the figure, we would then like to see that the extremes of the intervention data are assigned $C=1$, whereas many values in the center are assigned $C=0$. This would correspond to interventions that clearly affect the cause variable being assigned to the $C=1$ cluster. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{7context_hist.pdf}
+    \caption{Distribution of the expression level of the cause genes in the strongest predictions of order-LCD. Clusters are made based on whether the data points are observation or intervention data, and based on the context value if the data point is interventional.}
+    \label{fig:7:contexthist}
+\end{figure}
 
 In Figure \ref{fig:7:contexthist} we fortunately see that no data points in the extremes are assigned to $C=0$. However, also very little central data points are assigned to $C=0$. This means that the difference in the data used by the independence tests of order-based LCD and the original LCD are very similar, and we would indeed not expect large differences. 
 
