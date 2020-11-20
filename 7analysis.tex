@@ -41,7 +41,9 @@ The \textit{order-compliant relations} ROC curve contains only those relations t
 
 \subsubsection{Compared to LCD Methods}
 
-Figure \ref{fig:7:roclcd} shows ROC curves of all methods related to LCD. The most important result is that the ROC curves of the original LCD and our order-based LCD are very similar. This means that we failed in our attempt to improve on the original LCD by informing the context with some gene ordering. We analyse the small difference between these two methods in the end of this section.
+Figure \ref{fig:7:roclcd} shows ROC curves of all methods related to LCD using discrete predictions and an absolute ground-truth. ROC curves with the other settings and evaluated on subsets of the relations are in Appendix \ref{appendix:roc}.
+
+The most important result is that the ROC curves of the original LCD and our order-based LCD are very similar. This means that we failed in our attempt to improve on the original LCD by informing the context with some gene ordering. We analyse the small difference between these two methods in the end of this section.
 
 Figure \ref{fig:7:roclcd} also shows the results of an ablation study. We randomized the inferred order, the inferred gene positions, and both together, to investigate to what extend these additions to the original LCD contribute to the performance of order-based LCD. Although order-based LCD is not beaten by its randomized versions in the strongest predictions, the difference is never more than a few true positives. We have to conclude that we failed to show a significant effect of our order inference and our position inference. This may show that the approach is not effective on this dataset, or that order inference or position inference should be implemented differently to benefit LCD. Since position inference was not as extensively developed in this thesis, the problem may lie there.
 
@@ -54,7 +56,7 @@ Figure \ref{fig:7:roclcd} also shows the results of an ablation study. We random
 
 \subsection{Accumulated Regression Deviation}
 
-We provide another approach to evaluate the performance of the algorithms to show that our conclusions extend beyond binary ground-truths and ROC curves. When some method predicts an ancestral relation, we use the data in the train split to predict a precise expression value of the knock-out. Figure \ref{fig:7:contex} shows how this is computed. Using the joint data or only the intervention data, we apply linear regression and use it to predict a deviation at the knock-out value of the cause gene. Note that we are cheating a little here, since this knock-out value is not in the train split. If the results of this approach were great, we could redefine the metric to see if the results are robust. For example, we could assume a standard knock-out value of about $-2.5$.
+We provide another approach to evaluate the performance of the algorithms to show that our conclusions extend beyond binary ground-truths and ROC curves. When some method predicts an ancestral relation, we use the data in the train split to predict a precise expression value of the knock-out. 
 
 \begin{figure}[h]
     \centering
@@ -77,7 +79,9 @@ We provide another approach to evaluate the performance of the algorithms to sho
     \label{fig:7:conlcd}
 \end{figure}
 
-To compare the performance of the most confident predictions of different algorithms, we create accumulated regression deviation graphs. These accumulate the deviations of the top predictions using the $l_1$-norm or $l_2$-norm.\footnote{The $l_1$-norm is the sum of absolute values, the $l_2$-norm is the sum of squared values.} Better methods have graphs with low accumulated deviation for the top predictions.
+Figure \ref{fig:7:contex} shows how this is computed. Using the joint data or only the intervention data, we apply linear regression and use it to predict a deviation at the knock-out value of the cause gene. Note that we are cheating a little here, since this knock-out value is not in the train split. If the results of this approach were great, we could redefine the metric to see if the results are robust. For example, we could assume a standard knock-out value of about $-2.5$.
+
+To compare the performance of the most confident predictions of different algorithms, we create accumulated regression deviation graphs. These accumulate the deviations of the top discrete predictions using the $l_1$-norm or $l_2$-norm.\footnote{The $l_1$-norm is the sum of absolute values, the $l_2$-norm is the sum of squared values.} Better methods have graphs with low accumulated deviation for the top predictions.
 
 Figure \ref{fig:7:congen} shows the graphs for order-based LCD compared to ICP and the L$_2$-boosting baseline. Again, both methods beat the baseline for the strongest predictions in all settings. Interestingly, order-based LCD seems to take longer to degrade than ICP. This result was not further investigated in this thesis.
 
@@ -131,14 +135,12 @@ Figure \ref{fig:7:scorevs} further shows that when we sort predictions from stro
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=.3\textwidth]{7score_vs.pdf}
-    \caption{Comparing how predictions of order-based LCD and the original LCD are related, going from strongest to weakest predictions. A prediction level contains relations that are assigned the same score, and can therefore not be ordered among themselves.}
+    \includegraphics[width=\textwidth]{7score_vs.pdf}
+    \caption{Comparing how predictions of order-based LCD and the original LCD, ICP, and the L$_2$-boosting baseline are related, going from strongest to weakest predictions. A prediction level contains relations that are assigned the same score, and can therefore not be ordered among themselves.}
     \label{fig:7:scorevs}
 \end{figure}
 
 Since we showed in many ways that both methods are very similar. We expect that this is the case because the position inference algorithm is chosen to be too conservative. In Chapter \ref{chapter:methodcontext} we chose a middle way between the desirable properties of a very spread out distribution of inferred gene positions, and inferred positions that hardly precede the actual position according to the order inference algorithm. The chosen middle way still resulted in most positions to be pushed to the end of the order, therefore keeping most of the context values $1$. Note that pushing a position all the way to the back means that all context is one, rendering the method identical to the original LCD. Simply put, if we spread out the positions more, then the method becomes more different from the original LCD. 
-
-Figure \ref{fig:7:contexthist} shows the distribution of the cause variable expressions in the data, for the five causes in the strongest predictions of order-based LCD. The expressions are separated in three clusters, corresponding to the data source (observation or intervention) and the assigned context value. Ideally, in the cluster with context value $1$, we collect those interventions that are affected by the cause variable. In this thesis we attempt to estimate this with an order in the genes. In the figure, we would then like to see that the extremes of the intervention data are assigned $C=1$, whereas many values in the center are assigned $C=0$. This would correspond to interventions that clearly affect the cause variable being assigned to the $C=1$ cluster. 
 
 \begin{figure}[h]
     \centering
@@ -146,6 +148,8 @@ Figure \ref{fig:7:contexthist} shows the distribution of the cause variable expr
     \caption{Distribution of the expression level of the cause genes in the strongest predictions of order-LCD. Clusters are made based on whether the data points are observation or intervention data, and based on the context value if the data point is interventional.}
     \label{fig:7:contexthist}
 \end{figure}
+
+Figure \ref{fig:7:contexthist} shows the distribution of the cause variable expressions in the data, for the five causes in the strongest predictions of order-based LCD.\footnote{Appendix \ref{appendix:roc} shows the top 25 for order-based LCD, original LCD, L$_2$-boosting and a random selection.} The expressions are separated in three clusters, corresponding to the data source (observation or intervention) and the assigned context value. Ideally, in the cluster with context value $1$, we collect those interventions that are affected by the cause variable. In this thesis we attempt to estimate this with an order in the genes. In the figure, we would then like to see that the extremes of the intervention data are assigned $C=1$, whereas many values in the center are assigned $C=0$. This would correspond to interventions that clearly affect the cause variable being assigned to the $C=1$ cluster. 
 
 In Figure \ref{fig:7:contexthist} we fortunately see that no data points in the extremes are assigned to $C=0$. However, also very little central data points are assigned to $C=0$. This means that the difference in the data used by the independence tests of order-based LCD and the original LCD are very similar, and we would indeed not expect large differences. 
 

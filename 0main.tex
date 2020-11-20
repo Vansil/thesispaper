@@ -26,10 +26,11 @@
 \usepackage{float}
 
 % Custom commands
-\newcommand{\silvan}[1]{\textcolor{red}{[#1]}}
+% \newcommand{\silvan}[1]{\textcolor{red}{[#1]}}
 
 % References as hyperlinks
-\usepackage[colorlinks,linktocpage=true,linkcolor=blue,citecolor=blue,urlcolor=blue,bookmarks=false,hypertexnames=true]{hyperref}
+\definecolor{darkblue}{RGB}{0,0,130}
+\usepackage[colorlinks,linktocpage=true,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkblue,bookmarks=false,hypertexnames=true]{hyperref}
 
 % Math
 \usepackage{amssymb}
@@ -92,21 +93,19 @@
 \begin{document}
 
 \input{0titlepage}
+% \input{0btitlepage}
+
+\input{01abstract}
+
+% \input{02acknowledgements}
+\nocite{acknowledgements}
+
+% \input{03samenvatting}
 
 \newpage
-\begin{abstract}
-    Abstract
-\end{abstract}
-
-\newpage
-\section*{Acknowledgements}
-
-\newpage
-\section*{Nederlandse Samenvatting}
-
-
-\newpage
+\clearpage\thispagestyle{empty}\addtocounter{page}{-1} 
 \tableofcontents
+\clearpage
 
 % \input{01notation}
 
@@ -139,8 +138,6 @@
 \input{9Bordermethods}
 
 \input{9Aroccurves}
-
-
 
 \newpage
 \bibliography{references}

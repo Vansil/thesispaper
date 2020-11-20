@@ -1,0 +1,20 @@
+\newpage
+\clearpage\thispagestyle{empty}\addtocounter{page}{-1} 
+\begin{abstract}
+
+Artificial intelligence (AI) is a field of science that attempts to automate human intelligence. In the last decades, the statistical approach to this automation has made tremendous progress, especially with deep learning in subdomains like computer vision and natural language processing. However, the statistical approach is starting to reach limits.
+% , and new interest is sparked in the combination of statistical and symbolic AI.
+
+One limitation of purely statistical AI is that it has no understanding of cause and effect. On the intersection of statistical and symbolic AI, the field of causality offers a framework to model causal assumptions. This framework allows for a formal analysis of cause and effect in data. 
+
+The focus of this thesis is to infer causal relations in a gene perturbation dataset \citep{kemmeren2014large}. This dataset contains measurements of the expression of genes in yeast bacteria, under normal circumstances and when a gene is knocked out. The dataset is sparse and high-dimensional, which makes the task particularly challenging.
+
+We attempt to improve a simple and efficient inference algorithm called Local Causal Discovery (LCD), because its performance is near state-of-the-art on this dataset \citep{versteeg2019boosting}. The method relies on an exogenous context variable to predict ancestral relations. 
+
+Our hypothesis is that there is some implicit causal order among the genes, which can be used to inform the context and improve the performance of LCD. We extensively investigate algorithms to estimate such order, and share this code on Github.\footnote{\href{https://github.com/Vansil/order-inference}{https://github.com/Vansil/order-inference}} An algorithm is chosen that uses TrueSkill \citep{herbrich2007trueskill}, which was originally developed to rate a skill level of players based on game outcomes.
+
+Although the order estimation seems appropriate, we do not succeed to improve the performance of the LCD method. We thoroughly analyse the properties of the method and compare it with the original LCD version. Directions for future research are suggested to help further develop causal inference on this challenging dataset.
+
+
+\end{abstract}
+\clearpage

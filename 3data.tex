@@ -98,7 +98,7 @@ Because the expression of most genes is not normally distributed, the normality 
     \includegraphics[width=\textwidth]{3cycles}
     \caption{Left: number of SCCs in the graph per ground-truth threshold. Middle: percentage of intervention genes that are in a SCC per threshold. Right: percentage of causal relations that are significant according to the threshold.}
     \label{fig:3:cycles}
-\end{figure}    
+\end{figure}
 
 The hypothesis of this thesis that there is some implicit order in the genes, requires that there are no \textbf{cycles} in the SCM. We construct a graph from the binary ground-truth and compute the number of strongly-connected components (SCCs): the number of variable subsets in which there is a directed path from each variable to each other variable. Combined with the number of variables in SCCs, this gives an indication of the validity of the acyclicity assumption. 
 
@@ -106,14 +106,14 @@ The results in Figure \ref{fig:3:cycles} show that for any ground-truth threshol
 
 We conclude that the presence of cycles challenges our hypothesis. In finding some underlying order, we will need to ignore some relations to get an acyclic approximation. In fact, the order inference algorithm that is finally used is even based on a $20\%$ threshold ($\sim 0.128$), and designed to break cycles effectively. 
 
+Next we test the frequency of \textbf{confounding} in the data. We could search for common ancestors in the binary ground-truth, but this will not find latent confounding. Therefore, we test for each variable pair if they are dependent by the partial independence test, and not a cause of each other in the ground-truth. Note that we will miss variable pairs in which one variable causes another, while also being confounded. Figure \ref{fig:3:confounding} shows that at our ground-truth thresholds, and a significance level of $\alpha = 0.01$, about $20\%$ of all relations among intervention genes is confounded. Note that all ground-truth thresholds are quite strict, so most relations are non-causal. Since about $20\%$ of relations are dependent at the chosen $\alpha$, this also determines mostly the percentage of confounded variable pairs.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{3confounding}
-    \caption{Left: percentage of relations that are only related by confounding, for different binary thresholds, and significance levels. The two crosses show the alpha and thresholds used in this thesis. Middle: percentage of relations that are dependent per significance level. Right: percentage of relations that are not causal per binary ground-truth threshold (inverse of Figure \ref{fig:3:cycles}-right)}. Relations that do not exist in either direction are indicated by dark blue, relations that do exist in one direction are indicated in light blue.
+    \caption{Left: percentage of relations that are only related by confounding, for different binary thresholds, and significance levels. The two crosses show the alpha and thresholds used in this thesis. Middle: percentage of relations that are dependent per significance level. Right: percentage of relations that are not causal per binary ground-truth threshold (inverse of Figure \ref{fig:3:cycles}-right). Relations that do not exist in either direction are indicated by dark blue, relations that do exist in one direction are indicated in light blue.}
     \label{fig:3:confounding}
 \end{figure}    
-
-Next we test the frequency of \textbf{confounding} in the data. We could search for common ancestors in the binary ground-truth, but this will not find latent confounding. Therefore, we test for each variable pair if they are dependent by the partial independence test, and not a cause of each other in the ground-truth. Note that we will miss variable pairs in which one variable causes another, while also being confounded. Figure \ref{fig:3:confounding} shows that at our ground-truth thresholds, and a significance level of $\alpha = 0.01$, about $20\%$ of all relations among intervention genes is confounded. Note that all ground-truth thresholds are quite strict, so most relations are non-causal. Since about $20\%$ of relations are dependent at the chosen $\alpha$, this also determines mostly the percentage of confounded variable pairs.
 
 Being a biological system, we suspect that gene expressions are highly interconnected, explaining a high percentage of confounding. However, most of the relations are indirect and have relatively small effect, which makes it hard to infer the causal structure. Large prevalence of latent confounding is acceptable, since most methods can deal with it. However, the recall of LCD may be quite limited. It cannot identify ancestral relations that are also confounded, meaning that an expected $20\%$ of all relations are already disqualified.
 
