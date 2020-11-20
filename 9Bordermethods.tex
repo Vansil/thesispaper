@@ -1,0 +1,52 @@
+\newpage
+\section{Details of Order Inference Methods}
+\label{appendix:order}
+
+This appendix lists the settings of the order inference methods of Chapter \ref{chapter:methodorder}, and mentions the parameters that were experimented with in preliminary research to ensure good results. Consult the main chapter for details on the content of the algorithms.
+
+\subsubsection{Edmonds Algorithm}
+
+The Edmonds algorithm was implemented using the \texttt{Edmonds} function in the \texttt{networkx} \texttt{Python} package.\footnote{\href{https://networkx.org/documentation/stable/reference/index.html}{https://networkx.org/documentation/stable/reference/index.html}} The algorithm has no parameters.
+
+The sparse version of Edmonds selects the $10$ strongest edges per node in the graph. We experimented with $50$ nodes as well, which led to much more computational cost and no improvement in penalty ratio.
+
+
+\subsubsection{Evolution Strategy}
+
+No external code was used to implement the evolution strategies. The discrete and continuous ESs differ only in their fitness scoring. Continuous ES minimizes the penalty. Discrete ES maximizes the number of relations that do not violate the order, computing a ground-truth with an absolute threshold at $0.7$, which is approximately the top $1\%$.
+
+Solutions are represented as a permutation. The population size (number of solutions kept at one iteration) is $100$. The population is randomly initialized. 
+
+At every iteration, we combine pairs parents to form a new generation. Parents are selected randomly. We use cyclic recombination for the main results. This algorithm is described in the chapter. We tried direct recombination as well. In this case, we randomly select some positions in the permutation, using a selection probability that we experimented with. The selected positions are moved to the other parent. The positions that are not switched to the other parent, are kept in the same relative order and filled in left-to-right. The same happens from the other parent to the first.
+
+We used no mutation in the final ESs, because it increased computation time without clear benefits. However, we did experiment with two mutation algorithms. Mutation applies small random changes to individuals. We tried to swap pairs of positions in the permutation with some probability, that we varied. We also tried to invert random subsequences of fixed length with some probability. Length and probability were varied as well.
+
+We experimented with the probability to apply recombination and mutation as well. In the ESs that we report, the recombination rate is $1$ (applied to all parent pairs), and the mutation rate is $0$ (never applied). This led to the best results. 
+
+Each iteration, an offspring of $400$ individuals are created. The $100$ with the highest fitness are selected as the new generation. In the case that the new generation is worse than the old one, we keep an elite of the best $5$ individuals of the last generations, at the expense of the worst $5$ in the new selection. 
+
+We experimented with different values for population size, offspring size, and elite size.
+
+Every experiment was run for $200$ iterations, and stopped if there were no improvements in fitness for $30$ iterations. Experiments were often repeated $5$ times. We tracked fitness, and an approximation of the average Hamming distance between pairs in the population as a proxy for diversity.
+
+
+\subsubsection{Sorted TrueSkill}
+
+The TrueSkill code was taken from the \texttt{trueskill} \texttt{Python} package.\footnote{\href{https://pypi.org/project/trueskill/}{https://pypi.org/project/trueskill/}} A graph was constructed using the $20\%$ absolute ground-truth.
+
+Updates of the mean and variance variables are iterated $15$ times. The final skill is computed per gene as $\mu + 3\sigma$. The algorithm uses a tie probability parameter of $0.05$.
+
+
+\subsubsection{Sorted Social Agony}
+
+The Social Agony code was taken from the code of Sun's algorithm, but is also made available by the authors of the corresponding paper.\footnote{\href{http://users.ics.aalto.fi/ntatti/software.shtml}{http://users.ics.aalto.fi/ntatti/software.shtml}} A graph was constructed using the $20\%$ absolute ground-truth. The algorithm has no parameters.
+
+
+\subsubsection{Sorted PageRank}
+
+The PageRank code was taken from the \texttt{pagerank} function in the \texttt{networkx} \texttt{Python} package.\footnote{\href{https://networkx.org/documentation/stable/reference/index.html}{https://networkx.org/documentation/stable/reference/index.html}} A graph was constructed using the $20\%$ absolute ground-truth. The alpha parameter was set to $0.85$. The maximum number of iterations was $100$.
+
+
+\subsubsection{Sun's algorithm}
+
+The code of Sun's algorithm is shared by the authors.\footnote{\href{https://github.com/zhenv5/breaking_cycles_in_noisy_hierarchies}{https://github.com/zhenv5/breaking\_cycles\_in\_noisy\_hierarchies}} A graph was constructed using the $20\%$ absolute ground-truth. The parameters of the scoring methods are the same as in the three sorted methods above.

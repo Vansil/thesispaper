@@ -21,8 +21,9 @@
 \usepackage{graphicx}
 \graphicspath{{Figures/}}
 
-% Figure captions
+% Figure captions and placement
 \usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage{float}
 
 % Custom commands
 \newcommand{\silvan}[1]{\textcolor{red}{[#1]}}
@@ -93,6 +94,18 @@
 \input{0titlepage}
 
 \newpage
+\begin{abstract}
+    Abstract
+\end{abstract}
+
+\newpage
+\section*{Acknowledgements}
+
+\newpage
+\section*{Nederlandse Samenvatting}
+
+
+\newpage
 \tableofcontents
 
 % \input{01notation}
@@ -123,7 +136,10 @@
 
 \appendix
 
+\input{9Bordermethods}
+
 \input{9Aroccurves}
+
 
 
 \newpage
