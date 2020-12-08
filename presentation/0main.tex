@@ -1,0 +1,49 @@
+\documentclass[dvipsnames]{beamer}
+
+\mode<presentation> {
+    \usetheme{Szeged}
+    \usecolortheme{beaver}
+}
+
+% \usepackage{graphicx} % Allows including images
+% \usepackage{subfig}
+% \usepackage{amsmath}
+% \usepackage{amsthm}
+
+% Graphics
+\usepackage{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Figures/}}
+
+% Commands
+\newcommand{\twoimg}[2]{
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \includegraphics[width=\textwidth]{#1}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \includegraphics[width=\textwidth]{#2}
+        \end{column}
+    \end{columns}
+}
+
+
+\begin{document}
+
+\input{01title}
+
+\input{02contents}
+
+\input{1introduction}
+
+\input{2understanding}
+
+\input{3design}
+
+\input{4analysis}
+
+\input{5outlook}
+
+\input{6extras}
+
+\end{document}
