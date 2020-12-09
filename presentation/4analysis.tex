@@ -1,15 +1,101 @@
 \section{Analysis}
 
 \begin{frame}
-    \frametitle{Introduction}
+    \frametitle{Experiments}
 
-    First slide
+    \only<1>{
+        Set-up
+        \begin{itemize}
+            \item 5 data folds
+            \item 100 $\times$ 50\% subsamples
+            \item L$_2$-boosting preselection
+        \end{itemize}
+    }
+
+    \only<2>{
+        Methods
+        \begin{itemize}
+            \item Baselines: random, L$_2$-boosting
+            \item Comparison: LCD, boosted LCD, ICP
+            \item Ablations: random order and/or positions
+        \end{itemize}
+    }
+
+    \only<3>{
+        Evaluation
+        \begin{itemize}
+            \item Prediction method: discrete, continuous
+            \item Ground-truth for ROC: 3 thresholds, absolute and standardized
+            \item Norm for regression deviation: $l_1$-norm, $l_2$-norm
+            \item Data: all, intervention table, order-compliant relations
+        \end{itemize}
+    }
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Similarity to LCD}
+
+    \only<1>{
+        \begin{center}
+            \includegraphics[height=.8\textheight]{4analysis/olcd_vs_lcd.png}
+        \end{center}
+    }
+
+    \only<2>{
+        \begin{center}
+            \includegraphics[width=\textwidth]{paper/7score_vs}
+        \end{center}
+    }
+
+    \only<3>{
+        \begin{center}
+            \includegraphics[height=.8\textheight]{4analysis/context_hist_strongest.png}
+        \end{center}
+    }
+
+    \only<4>{
+        \begin{center}
+            \includegraphics[width=\textwidth]{paper/7context_hist}
+        \end{center}
+    }
 
 \end{frame}
 
 \begin{frame}
-    \frametitle{Introduction}
+    \frametitle{Quantitative Results}
 
-    Second slide
+
+    \only<1>{
+        \begin{center}
+            \includegraphics[width=\textwidth]{4analysis/roc_method}
+        \end{center}
+    }
+
+    \only<2>{
+        \begin{center}
+            \includegraphics[width=\textwidth]{4analysis/roc_lcd}
+        \end{center}
+    }
+
+    \only<3>{
+        \begin{center}
+            \includegraphics[height=.8\textheight]{4analysis/regression_example}
+        \end{center}
+    }
+
+    \only<4>{
+        \begin{center}
+            \includegraphics[width=\textwidth]{4analysis/cont_method}
+        \end{center}
+    }
+
+    \only<5>{
+        \begin{center}
+            \includegraphics[width=\textwidth]{4analysis/cont_lcd}
+        \end{center}
+    }
+    
 
 \end{frame}

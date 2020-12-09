@@ -242,9 +242,19 @@
         Modeling the task
         \begin{itemize}
             \item Useful data: 
+                \begin{itemize}
+                    \item Effects of train gene knock-outs on test gene
+                    \item Inferred order of train genes
+                \end{itemize}
+            \item Minimize deviation from position according to inferred order
         \end{itemize}
     }
-    
+
+    \only<2>{
+        \begin{center}
+            \includegraphics[width=\textwidth]{paper/5inferred_positions}
+        \end{center}
+    }
 \end{frame}
 
 
@@ -264,7 +274,7 @@
         \begin{enumerate}
             \item \textbf{Order inference}: Sorted TrueSkill \phantom{halllllloooooooooooooooooooooooooooo}
             \item \textbf{Position estimation}: Simple conservative estimate \phantom{hallllllooooooooooooooo}
-            \item \textbf{Causal inference}: order-based LCD \phantom{hallllllooooooooooooooo}
+            \item \textbf{Causal inference}: Order-based LCD \phantom{hallllllooooooooooooooo}
         \end{enumerate}
     }
 
